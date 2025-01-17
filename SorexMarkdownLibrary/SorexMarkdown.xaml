@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="SorexMarkdown.MdControl"
+<UserControl x:Class="SorexMarkdownLibrary.SorexMarkdown"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mdxam="clr-namespace:MdXaml;assembly=MdXaml"
-             xmlns:local="clr-namespace:SorexMarkdown"
+             xmlns:local="clr-namespace:SorexMarkdownLibrary"
              >
     <UserControl.DataContext>
         <local:Data/>
     </UserControl.DataContext>
-    
+
     <mdxam:MarkdownScrollViewer
         VerticalAlignment="Stretch"
         HorizontalAlignment="Stretch"

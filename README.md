@@ -1,2 +1,2 @@
-# sorex-win64
-Sorex application for Windows
+# Sorex App
+Simple lightweight note taking app for Windows.

@@ -1,6 +1,6 @@
-﻿namespace Sorex
+﻿namespace SorexUI
 {
-    partial class Sorex
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.editBox = new System.Windows.Forms.TextBox();
             this.wpfWidget = new System.Windows.Forms.Integration.ElementHost();
-            this.markdown = new SorexMarkdown.MdControl();
+            this.markdown = new SorexMarkdownLibrary.SorexMarkdown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -96,7 +96,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox editBox;
         private System.Windows.Forms.Integration.ElementHost wpfWidget;
-        private SorexMarkdown.MdControl markdown;
+        private SorexMarkdownLibrary.SorexMarkdown markdown;
     }
 }
 
