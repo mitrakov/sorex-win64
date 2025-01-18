@@ -4,7 +4,7 @@ namespace SorexUI.model;
 
 internal class SQLiteDatabase
 {
-    private SqliteConnection db = new SqliteConnection();
+    private SqliteConnection db = new();
 
     void OpenDb(string path)
     {
@@ -26,7 +26,6 @@ internal class SQLiteDatabase
     void CreateDb(string path)
     {
         OpenDb(path);
-        // TODO: transaction
         using var tx = db.BeginTransaction();
         var sql = """
                     CREATE TABLE note (
@@ -64,7 +63,7 @@ internal class SQLiteDatabase
                     );
                     """;
         //db.UserVersion = 3; // TODO
-        new SqliteCommand(sql, db, tx).ExecuteNonQuery();
+        SqlCmd(sql, tx).ExecuteNonQuery();
 
         tx.Commit(); // TODO check if necessary
     }
@@ -72,11 +71,8 @@ internal class SQLiteDatabase
     Int64 InsertNote(string data)
     {
         using var tx = db.BeginTransaction();
-        var opt = new SqliteCommand("INSERT INTO note DEFAULT VALUES;", db, tx).ExecuteScalar() as Int64?;
-        var noteId = opt ?? -1;
-        var cmd = new SqliteCommand("INSERT INTO notedata (rowid, data) VALUES (?, ?);", db, tx);
-        cmd.Parameters.AddRange([new SqliteParameter() { Value = noteId }, new SqliteParameter() { Value = data }]);
-        cmd.ExecuteScalar();
+        var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES;", tx).ExecuteScalar() as Int64? ?? -1;
+        SqlCmd("INSERT INTO notedata (rowid, data) VALUES (?, ?);", tx, noteId, data).ExecuteScalar();
 
         tx.Commit();
         return noteId;
@@ -85,33 +81,29 @@ internal class SQLiteDatabase
     void UpdateNote(Int64 noteId, string data)
     {
         using var tx = db.BeginTransaction();
-        var cmd1 = new SqliteCommand("UPDATE notedata SET data = ? WHERE rowid = ?;", db, tx);
-        cmd1.Parameters.AddRange([new SqliteParameter() { Value = data }, new SqliteParameter() { Value = noteId }]);
-        var cmd2 = new SqliteCommand("UPDATE note SET updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", db, tx);
-        cmd2.Parameters.AddRange([new SqliteParameter() { Value = noteId }]);
 
-        new List<SqliteCommand>([cmd1, cmd2]).ForEach(cmd => cmd.ExecuteNonQuery());
+        new List<SqliteCommand>([
+            SqlCmd("UPDATE notedata SET data = ? WHERE rowid = ?;", tx, data, noteId),
+            SqlCmd("UPDATE note SET updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", tx, noteId)
+        ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
         tx.Commit();
     }
 
     void SoftDeleteNote(Int64 noteId, bool deleted)
     {
-        var cmd = new SqliteCommand("UPDATE note SET is_deleted = ?, updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", db);
-        cmd.Parameters.AddRange(new[] { new SqliteParameter() { Value = deleted }, new SqliteParameter() { Value = noteId } });
-        cmd.ExecuteNonQuery();
+        SqlCmd("UPDATE note SET is_deleted = ?, updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", deleted, noteId).ExecuteNonQuery();
     }
 
     void DeleteNote(Int64 noteId)
     {
         using var tx = db.BeginTransaction();
-        var cmd1 = new SqliteCommand("DELETE FROM note     WHERE note_id = ?;", db, tx);
-        cmd1.Parameters.AddRange([new SqliteParameter() { Value = noteId }]);
-        var cmd2 = new SqliteCommand("DELETE FROM notedata WHERE rowid = ?;", db, tx);
-        cmd2.Parameters.AddRange([new SqliteParameter() { Value = noteId }]);
-        var cmd3 = new SqliteCommand("DELETE FROM tag      WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", db, tx);
 
-        new List<SqliteCommand>([cmd1, cmd2, cmd3]).ForEach(cmd => cmd.ExecuteNonQuery());
+        new List<SqliteCommand>([
+            SqlCmd("DELETE FROM note     WHERE note_id = ?;", tx, noteId),
+            SqlCmd("DELETE FROM notedata WHERE rowid = ?;", tx, noteId),
+            SqlCmd("DELETE FROM tag      WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
+        ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
         tx.Commit();
     }
@@ -135,7 +127,7 @@ internal class SQLiteDatabase
           ;
         """;
 
-        using var reader = new SqliteCommand(sql, db).ExecuteReader();
+        using var reader = SqlCmd(sql).ExecuteReader();
         while (reader.Read())
             result.Add(new Note(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetBoolean(3)));
 
@@ -146,7 +138,7 @@ internal class SQLiteDatabase
     {
         var result = new List<string>();
 
-        using var reader = new SqliteCommand("SELECT name FROM tag ORDER BY name;", db).ExecuteReader();
+        using var reader = SqlCmd("SELECT name FROM tag ORDER BY name;").ExecuteReader();
         while (reader.Read())
             result.Add(reader.GetString(0));
 
@@ -167,9 +159,7 @@ internal class SQLiteDatabase
           GROUP BY note_id
           ;
         """;
-        var cmd = new SqliteCommand(sql, db);
-        cmd.Parameters.AddRange([new SqliteParameter() { Value = id }]);
-        using var reader = cmd.ExecuteReader();
+        using var reader = SqlCmd(sql, id).ExecuteReader();
         while (reader.Read())
             result = new Note(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetBoolean(3));
 
@@ -194,9 +184,7 @@ internal class SQLiteDatabase
           ORDER BY note.updated_at DESC
           ;
         """;
-        var cmd = new SqliteCommand(sql, db);
-        cmd.Parameters.AddRange([new SqliteParameter() { Value = tag }]);
-        using var reader = cmd.ExecuteReader();
+        using var reader = SqlCmd(sql, tag).ExecuteReader();
         while (reader.Read())
             result.Add(new Note(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetBoolean(3)));
 
@@ -222,9 +210,7 @@ internal class SQLiteDatabase
           ORDER BY notedata.rank ASC, note.updated_at DESC
           ;
         """;
-        var cmd = new SqliteCommand(sql, db);
-        cmd.Parameters.AddRange(new[] { new SqliteParameter() { Value = word } });
-        using var reader = cmd.ExecuteReader();
+        using var reader = SqlCmd(sql, word).ExecuteReader();
         while (reader.Read())
             result.Add(new Note(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetBoolean(3)));
 
@@ -238,17 +224,9 @@ internal class SQLiteDatabase
         using var tx = db.BeginTransaction();
         tags.ForEach(tag =>
         {
-            var tagIdOpt = new SqliteCommand("SELECT tag_id FROM tag WHERE name = ?;", db, tx).ExecuteScalar() as Int64?;
-            var tagId = tagIdOpt.IfNull(() =>
-            {
-                var cmd1 = new SqliteCommand("INSERT INTO tag (name) VALUES (?);", db, tx);
-                cmd1.Parameters.AddRange(new[] { new SqliteParameter() { Value = tag } });
-                return cmd1.ExecuteScalar() as Int64? ?? -1;
-            });
-
-            var cmd2 = new SqliteCommand("INSERT INTO note_to_tag (note_id, tag_id) VALUES (?, ?);", db, tx);
-            cmd2.Parameters.AddRange([new SqliteParameter() { Value = noteId }, new SqliteParameter() { Value = tagId }]);
-            cmd2.ExecuteNonQuery();
+            var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = ?;", tx, tag).ExecuteScalar() as Int64?;
+            var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (?);", tx, tag).ExecuteScalar() as Int64? ?? -1) ?? -1;
+            SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (?, ?);", tx, noteId, tagId).ExecuteNonQuery();
         });
 
         tx.Commit();
@@ -259,14 +237,26 @@ internal class SQLiteDatabase
         if (tags.Count == 0) return;
 
         using var tx = db.BeginTransaction();
-
         var IN = string.Join(",", Enumerable.Repeat("?", tags.Count)); // "?,?,?,?"
-        var cmd1 = new SqliteCommand($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN (${IN}));", db, tx);
-        cmd1.Parameters.AddRange(tags.Select(tag => new SqliteParameter { Value = tag }).Prepend(new SqliteParameter() { Value = noteId }).ToArray());
-        var cmd2 = new SqliteCommand("DELETE FROM tag WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", db, tx);
-
-        new List<SqliteCommand>([cmd1, cmd2]).ForEach(cmd => cmd.ExecuteNonQuery());
+        new List<SqliteCommand>([
+            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN (${IN}));", tx, noteId, tags),
+            SqlCmd( "DELETE FROM tag WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
+        ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
         tx.Commit();
+    }
+
+    protected SqliteCommand SqlCmd(string query, params object[] args)
+    {
+        var cmd = new SqliteCommand(query, db);
+        cmd.Parameters.AddRange(args.Select(arg => new SqliteParameter { Value = arg }));
+        return cmd;
+    }
+
+    protected SqliteCommand SqlCmd(string query, SqliteTransaction tx, params object[] args)
+    {
+        var cmd = new SqliteCommand(query, db, tx);
+        cmd.Parameters.AddRange(args.Select(arg => new SqliteParameter { Value = arg }));
+        return cmd;
     }
 }
