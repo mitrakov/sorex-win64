@@ -6,23 +6,18 @@ internal class SQLiteDatabase
 {
     private SqliteConnection db = new();
 
-    void OpenDb(string path)
+    internal void OpenDb(string path)
     {
         CloseDb();
-        db = new SqliteConnection($"Filename={path}; foreign_keys = true; user_version = 3");
+        db = new SqliteConnection($"Filename={path}; Foreign Keys=true");
+        db.Open();
     }
 
-    void CloseDb()
-    {
-        db.Close();
-    }
+    internal void CloseDb() => db.Close();
 
-    bool IsConnected()
-    {
-        return db.State == System.Data.ConnectionState.Open;
-    }
+    internal bool IsConnected() => db.State == System.Data.ConnectionState.Open;
 
-    void CreateDb(string path)
+    internal void CreateDb(string path)
     {
         OpenDb(path);
         using var tx = db.BeginTransaction();
@@ -61,12 +56,16 @@ internal class SQLiteDatabase
                       PRIMARY KEY (note_id, tag_id)
                     );
                     """;
-        SqlCmd(sql, tx).ExecuteNonQuery();
+
+        new List<SqliteCommand>([
+            SqlCmd(sql, tx),
+            SqlCmd("PRAGMA user_version=3", tx)
+        ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
         tx.Commit(); // TODO check if necessary
     }
 
-    Int64 InsertNote(string data)
+    internal Int64 InsertNote(string data)
     {
         using var tx = db.BeginTransaction();
         var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES;", tx).ExecuteScalar() as Int64? ?? -1;
@@ -76,7 +75,7 @@ internal class SQLiteDatabase
         return noteId;
     }
 
-    void UpdateNote(Int64 noteId, string data)
+    internal void UpdateNote(Int64 noteId, string data)
     {
         using var tx = db.BeginTransaction();
 
@@ -88,12 +87,12 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    void SoftDeleteNote(Int64 noteId, bool deleted)
+    internal void SoftDeleteNote(Int64 noteId, bool deleted)
     {
         SqlCmd("UPDATE note SET is_deleted = ?, updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", deleted, noteId).ExecuteNonQuery();
     }
 
-    void DeleteNote(Int64 noteId)
+    internal void DeleteNote(Int64 noteId)
     {
         using var tx = db.BeginTransaction();
 
@@ -107,7 +106,7 @@ internal class SQLiteDatabase
     }
 
 
-    List<Note> GetNotes(bool fetchDeleted)
+    internal List<Note> GetNotes(bool fetchDeleted)
     {
         var result = new List<Note>();
 
@@ -132,7 +131,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    List<string> GetTags()
+    internal List<string> GetTags()
     {
         var result = new List<string>();
 
@@ -143,7 +142,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    Note? SearchByID(Int64 id)
+    internal Note? SearchByID(Int64 id)
     {
         Note? result = null;
 
@@ -164,7 +163,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    List<Note> SearchByTag(string tag, bool fetchDeleted)
+    internal List<Note> SearchByTag(string tag, bool fetchDeleted)
     {
         var result = new List<Note>();
 
@@ -189,7 +188,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    List<Note> SearchByKeyword(string word, bool fetchDeleted)
+    internal List<Note> SearchByKeyword(string word, bool fetchDeleted)
     {
         if (word == "") return [];
         var result = new List<Note>();
@@ -215,7 +214,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    void LinkTagsToNote(Int64 noteId, List<string> tags)
+    internal void LinkTagsToNote(Int64 noteId, List<string> tags)
     {
         if (tags.Count == 0) return;
 
@@ -230,7 +229,7 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    void UnlinkTagsFromNote(Int64 noteId, List<string> tags)
+    internal void UnlinkTagsFromNote(Int64 noteId, List<string> tags)
     {
         if (tags.Count == 0) return;
 
