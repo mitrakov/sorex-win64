@@ -9,8 +9,7 @@ internal class SQLiteDatabase
     void OpenDb(string path)
     {
         CloseDb();
-        db = new SqliteConnection($"Filename={path}");
-        //db.ForeignKeys = true; // TODO
+        db = new SqliteConnection($"Filename={path}; foreign_keys = true; user_version = 3");
     }
 
     void CloseDb()
@@ -62,7 +61,6 @@ internal class SQLiteDatabase
                       PRIMARY KEY (note_id, tag_id)
                     );
                     """;
-        //db.UserVersion = 3; // TODO
         SqlCmd(sql, tx).ExecuteNonQuery();
 
         tx.Commit(); // TODO check if necessary
@@ -239,7 +237,8 @@ internal class SQLiteDatabase
         using var tx = db.BeginTransaction();
         var IN = string.Join(",", Enumerable.Repeat("?", tags.Count)); // "?,?,?,?"
         new List<SqliteCommand>([
-            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN (${IN}));", tx, noteId, tags),
+            // TODO repeated args may be wrong here
+            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, noteId, tags),
             SqlCmd( "DELETE FROM tag WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
         ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
