@@ -11,4 +11,9 @@ public partial class MainForm : Form
     {
         markdown.Markdown = editBox.Text;
     }
+
+    private void onRecentFileClick(object sender, EventArgs e)
+    {
+        Console.WriteLine(e);
+    }
 }

@@ -42,10 +42,10 @@ namespace SorexUI.view
             openMenuItem = new ToolStripMenuItem();
             separator2 = new ToolStripSeparator();
             closeFileMenuItem = new ToolStripMenuItem();
-            helpMenuItem = new ToolStripMenuItem();
-            aboutSorexMenuItem = new ToolStripMenuItem();
             separator3 = new ToolStripSeparator();
             exitMenuItem = new ToolStripMenuItem();
+            helpMenuItem = new ToolStripMenuItem();
+            aboutSorexMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -111,6 +111,7 @@ namespace SorexUI.view
             // 
             // openRecentMenuItem
             // 
+            openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, onRecentFileClick)).ToArray());
             openRecentMenuItem.Name = "openRecentMenuItem";
             openRecentMenuItem.Size = new Size(224, 26);
             openRecentMenuItem.Text = "Open Recent";
@@ -143,19 +144,6 @@ namespace SorexUI.view
             closeFileMenuItem.Size = new Size(224, 26);
             closeFileMenuItem.Text = "Close File";
             // 
-            // helpMenuItem
-            // 
-            helpMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutSorexMenuItem });
-            helpMenuItem.Name = "helpMenuItem";
-            helpMenuItem.Size = new Size(55, 24);
-            helpMenuItem.Text = "Help";
-            // 
-            // aboutSorexMenuItem
-            // 
-            aboutSorexMenuItem.Name = "aboutSorexMenuItem";
-            aboutSorexMenuItem.Size = new Size(224, 26);
-            aboutSorexMenuItem.Text = "About Sorex...";
-            // 
             // separator3
             // 
             separator3.Name = "separator3";
@@ -166,6 +154,19 @@ namespace SorexUI.view
             exitMenuItem.Name = "exitMenuItem";
             exitMenuItem.Size = new Size(224, 26);
             exitMenuItem.Text = "Exit";
+            // 
+            // helpMenuItem
+            // 
+            helpMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutSorexMenuItem });
+            helpMenuItem.Name = "helpMenuItem";
+            helpMenuItem.Size = new Size(55, 24);
+            helpMenuItem.Text = "Help";
+            // 
+            // aboutSorexMenuItem
+            // 
+            aboutSorexMenuItem.Name = "aboutSorexMenuItem";
+            aboutSorexMenuItem.Size = new Size(183, 26);
+            aboutSorexMenuItem.Text = "About Sorex...";
             // 
             // MainForm
             // 
