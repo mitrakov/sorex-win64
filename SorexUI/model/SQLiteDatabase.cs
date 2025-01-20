@@ -216,7 +216,7 @@ internal class SQLiteDatabase
 
     internal void LinkTagsToNote(Int64 noteId, IEnumerable<string> tags)
     {
-        if (tags.Count() == 0) return;
+        if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
         foreach (var tag in tags)
@@ -231,7 +231,7 @@ internal class SQLiteDatabase
 
     internal void UnlinkTagsFromNote(Int64 noteId, IEnumerable<string> tags)
     {
-        if (tags.Count() == 0) return;
+        if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
         var IN = string.Join(",", Enumerable.Repeat("?", tags.Count())); // "?,?,?,?"

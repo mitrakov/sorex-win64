@@ -4,7 +4,7 @@ namespace SorexUI.viewmodel;
 
 internal class MainViewModel
 {
-    private SQLiteDatabase db = new();
+    private readonly SQLiteDatabase db = new();
     private string? currentPath;
 
     internal void OpenFile(string path)
@@ -57,10 +57,7 @@ internal class MainViewModel
         currentPath = null;
     }
 
-    internal void GetRecentFiles()
-    {
-        // TODO
-    }
+    internal static IEnumerable<string> RecentFiles => user.Default.recentFiles.Cast<string>();
 
     internal IEnumerable<string> GetTags()
     {
@@ -119,7 +116,7 @@ internal class MainViewModel
         var tags = newTags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (!db.IsConnected) return null;
         if (data.Length == 0) return null;
-        if (tags.Count() == 0)
+        if (tags.Length == 0)
         {
             MessageBox.Show("Please add at least 1 tag\ne.g. \"Work\" or \"TODO\"", "Tag required", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return null;
@@ -153,13 +150,7 @@ internal class MainViewModel
         db.LinkTagsToNote(noteId, addTags);
     }
 
-    private void AddToRecentFilesList(string item)
-    {
-        // TODO not impl
-    }
+    private static void AddToRecentFilesList(string item) => user.Default.recentFiles.Add(item); // TODO check if exists?
 
-    private void RemoveFromRecentFilesList(string item)
-    {
-        // TODO not impl
-    }
+    private static void RemoveFromRecentFilesList(string item) => user.Default.recentFiles.Remove(item); // TODO need to Save()?
 }
