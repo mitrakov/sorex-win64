@@ -150,7 +150,18 @@ internal class MainViewModel
         db.LinkTagsToNote(noteId, addTags);
     }
 
-    private static void AddToRecentFilesList(string item) => user.Default.recentFiles.Add(item); // TODO check if exists?
+    private static void AddToRecentFilesList(string item)
+    {
+        if (!user.Default.recentFiles.Contains(item))
+        {
+            user.Default.recentFiles.Add(item);
+            user.Default.Save();
+        }
+    }
 
-    private static void RemoveFromRecentFilesList(string item) => user.Default.recentFiles.Remove(item); // TODO need to Save()?
+    private static void RemoveFromRecentFilesList(string item)
+    {
+        user.Default.recentFiles.Remove(item);
+        user.Default.Save();
+    }
 }
