@@ -2,11 +2,13 @@ namespace SorexUI;
 
 public partial class MainForm : Form
 {
-    public MainForm() {
+    public MainForm()
+    {
         InitializeComponent();
     }
 
-    private void editBox_TextChanged(object sender, EventArgs e) {
+    private void editBox_TextChanged(object sender, EventArgs e)
+    {
         markdown.Markdown = editBox.Text;
     }
 }
