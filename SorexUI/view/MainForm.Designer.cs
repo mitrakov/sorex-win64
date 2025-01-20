@@ -79,7 +79,7 @@ namespace SorexUI.view
             editBox.Name = "editBox";
             editBox.Size = new Size(266, 534);
             editBox.TabIndex = 0;
-            editBox.TextChanged += editBox_TextChanged;
+            editBox.TextChanged += EditBox_TextChanged;
             // 
             // wpfWidget
             // 
@@ -123,13 +123,14 @@ namespace SorexUI.view
             newFileMenuItem.Name = "newFileMenuItem";
             newFileMenuItem.Size = new Size(224, 26);
             newFileMenuItem.Text = "New File...";
-            newFileMenuItem.Click += onNewFileClick;
+            newFileMenuItem.Click += OnNewFileClick;
             // 
             // openMenuItem
             // 
             openMenuItem.Name = "openMenuItem";
             openMenuItem.Size = new Size(224, 26);
             openMenuItem.Text = "Open...";
+            openMenuItem.Click += OnOpenFileClick;
             // 
             // separator2
             // 
@@ -141,6 +142,7 @@ namespace SorexUI.view
             closeFileMenuItem.Name = "closeFileMenuItem";
             closeFileMenuItem.Size = new Size(224, 26);
             closeFileMenuItem.Text = "Close File";
+            closeFileMenuItem.Click += OnCloseFile;
             // 
             // separator3
             // 
@@ -152,6 +154,7 @@ namespace SorexUI.view
             exitMenuItem.Name = "exitMenuItem";
             exitMenuItem.Size = new Size(224, 26);
             exitMenuItem.Text = "Exit";
+            exitMenuItem.Click += OnExitClick;
             // 
             // helpMenuItem
             // 
@@ -163,8 +166,9 @@ namespace SorexUI.view
             // aboutSorexMenuItem
             // 
             aboutSorexMenuItem.Name = "aboutSorexMenuItem";
-            aboutSorexMenuItem.Size = new Size(183, 26);
+            aboutSorexMenuItem.Size = new Size(224, 26);
             aboutSorexMenuItem.Text = "About Sorex...";
+            aboutSorexMenuItem.Click += OnAboutSorexClick;
             // 
             // MainForm
             // 
@@ -195,7 +199,7 @@ namespace SorexUI.view
             // WPF widget should be initialized separately because of the bug in Visual Studio (https://github.com/dotnet/winforms/issues/9443)
             markdown = new SorexMarkdownLibrary.SorexMarkdown();
             wpfWidget.Child = markdown;
-            openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, onRecentFileClick)).ToArray());
+            openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
         }
 
         private System.Windows.Forms.SplitContainer splitContainer1;
