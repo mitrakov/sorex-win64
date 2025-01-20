@@ -28,66 +28,66 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.editBox = new System.Windows.Forms.TextBox();
-            this.wpfWidget = new System.Windows.Forms.Integration.ElementHost();
-            this.markdown = new SorexMarkdownLibrary.SorexMarkdown();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.SuspendLayout();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            editBox = new System.Windows.Forms.TextBox();
+            wpfWidget = new System.Windows.Forms.Integration.ElementHost();
+            markdown = new SorexMarkdownLibrary.SorexMarkdown();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            SuspendLayout();
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.editBox);
+            splitContainer1.Panel1.Controls.Add(editBox);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.wpfWidget);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 266;
-            this.splitContainer1.TabIndex = 0;
+            splitContainer1.Panel2.Controls.Add(wpfWidget);
+            splitContainer1.Size = new System.Drawing.Size(800, 450);
+            splitContainer1.SplitterDistance = 266;
+            splitContainer1.TabIndex = 0;
             // 
             // editBox
             // 
-            this.editBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editBox.Location = new System.Drawing.Point(0, 0);
-            this.editBox.Multiline = true;
-            this.editBox.Name = "editBox";
-            this.editBox.Size = new System.Drawing.Size(266, 450);
-            this.editBox.TabIndex = 0;
-            this.editBox.TextChanged += new System.EventHandler(this.editBox_TextChanged);
+            editBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            editBox.Location = new System.Drawing.Point(0, 0);
+            editBox.Multiline = true;
+            editBox.Name = "editBox";
+            editBox.Size = new System.Drawing.Size(266, 450);
+            editBox.TabIndex = 0;
+            editBox.TextChanged += new System.EventHandler(editBox_TextChanged);
             // 
             // wpfWidget
             // 
-            this.wpfWidget.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wpfWidget.Location = new System.Drawing.Point(0, 0);
-            this.wpfWidget.Name = "wpfWidget";
-            this.wpfWidget.Size = new System.Drawing.Size(530, 450);
-            this.wpfWidget.TabIndex = 0;
-            this.wpfWidget.Child = this.markdown;
+            wpfWidget.Dock = System.Windows.Forms.DockStyle.Fill;
+            wpfWidget.Location = new System.Drawing.Point(0, 0);
+            wpfWidget.Name = "wpfWidget";
+            wpfWidget.Size = new System.Drawing.Size(530, 450);
+            wpfWidget.TabIndex = 0;
+            wpfWidget.Child = markdown;
             // 
             // Sorex
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.splitContainer1);
-            this.Name = "Sorex";
-            this.Text = "Sorex";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(800, 450);
+            Controls.Add(splitContainer1);
+            Name = "Sorex";
+            Text = "Sorex";
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
