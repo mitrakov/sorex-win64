@@ -1,4 +1,6 @@
-﻿namespace SorexUI.view
+﻿using System.Windows.Forms.Integration;
+
+namespace SorexUI.view
 {
     partial class MainForm
     {
@@ -28,11 +30,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
-            editBox = new System.Windows.Forms.TextBox();
-            wpfWidget = new System.Windows.Forms.Integration.ElementHost();
+            splitContainer1 = new SplitContainer();
+            editBox = new TextBox();
+            wpfWidget = new ElementHost();
             markdown = new SorexMarkdownLibrary.SorexMarkdown();
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
@@ -40,8 +42,9 @@
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 28);
+            splitContainer1.Margin = new Padding(3, 4, 3, 4);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -51,44 +54,47 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(wpfWidget);
-            splitContainer1.Size = new System.Drawing.Size(800, 450);
+            splitContainer1.Size = new Size(800, 534);
             splitContainer1.SplitterDistance = 266;
             splitContainer1.TabIndex = 0;
             // 
             // editBox
             // 
-            editBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            editBox.Location = new System.Drawing.Point(0, 0);
+            editBox.Dock = DockStyle.Fill;
+            editBox.Location = new Point(0, 0);
+            editBox.Margin = new Padding(3, 4, 3, 4);
             editBox.Multiline = true;
             editBox.Name = "editBox";
-            editBox.Size = new System.Drawing.Size(266, 450);
+            editBox.Size = new Size(266, 534);
             editBox.TabIndex = 0;
-            editBox.TextChanged += new System.EventHandler(editBox_TextChanged);
+            editBox.TextChanged += editBox_TextChanged;
             // 
             // wpfWidget
             // 
-            wpfWidget.Dock = System.Windows.Forms.DockStyle.Fill;
-            wpfWidget.Location = new System.Drawing.Point(0, 0);
+            wpfWidget.Dock = DockStyle.Fill;
+            wpfWidget.Location = new Point(0, 0);
+            wpfWidget.Margin = new Padding(3, 4, 3, 4);
             wpfWidget.Name = "wpfWidget";
-            wpfWidget.Size = new System.Drawing.Size(530, 450);
+            wpfWidget.Size = new Size(530, 534);
             wpfWidget.TabIndex = 0;
             wpfWidget.Child = markdown;
             // 
-            // Sorex
+            // MainForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 562);
             Controls.Add(splitContainer1);
-            Name = "Sorex";
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "MainForm";
             Text = "Sorex";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
-
+            PerformLayout();
         }
 
         #endregion
