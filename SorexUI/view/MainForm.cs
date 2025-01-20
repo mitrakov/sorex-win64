@@ -5,6 +5,7 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        InitializeComponents();
     }
 
     private void editBox_TextChanged(object sender, EventArgs e)
@@ -14,6 +15,11 @@ public partial class MainForm : Form
 
     private void onRecentFileClick(object sender, EventArgs e)
     {
-        Console.WriteLine(e);
+        MessageBox.Show(">" + sender);
+    }
+
+    private void onNewFileClick(object sender, EventArgs e)
+    {
+        //MessageBox.Show("fjose");
     }
 }

@@ -30,7 +30,6 @@ namespace SorexUI.view
         /// </summary>
         private void InitializeComponent()
         {
-            markdown = new SorexMarkdownLibrary.SorexMarkdown();
             splitContainer1 = new SplitContainer();
             editBox = new TextBox();
             wpfWidget = new ElementHost();
@@ -84,7 +83,6 @@ namespace SorexUI.view
             // 
             // wpfWidget
             // 
-            wpfWidget.Child = markdown;
             wpfWidget.Dock = DockStyle.Fill;
             wpfWidget.Location = new Point(0, 0);
             wpfWidget.Margin = new Padding(3, 4, 3, 4);
@@ -111,7 +109,6 @@ namespace SorexUI.view
             // 
             // openRecentMenuItem
             // 
-            openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, onRecentFileClick)).ToArray());
             openRecentMenuItem.Name = "openRecentMenuItem";
             openRecentMenuItem.Size = new Size(224, 26);
             openRecentMenuItem.Text = "Open Recent";
@@ -126,6 +123,7 @@ namespace SorexUI.view
             newFileMenuItem.Name = "newFileMenuItem";
             newFileMenuItem.Size = new Size(224, 26);
             newFileMenuItem.Text = "New File...";
+            newFileMenuItem.Click += onNewFileClick;
             // 
             // openMenuItem
             // 
@@ -191,6 +189,14 @@ namespace SorexUI.view
         }
 
         #endregion
+
+        protected void InitializeComponents()
+        {
+            // WPF widget should be initialized separately because of the bug in Visual Studio (https://github.com/dotnet/winforms/issues/9443)
+            markdown = new SorexMarkdownLibrary.SorexMarkdown();
+            wpfWidget.Child = markdown;
+            openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, onRecentFileClick)).ToArray());
+        }
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox editBox;
