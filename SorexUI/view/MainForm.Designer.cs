@@ -1,4 +1,4 @@
-﻿namespace SorexUI
+﻿namespace SorexUI.view
 {
     partial class MainForm
     {

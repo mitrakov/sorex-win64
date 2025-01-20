@@ -15,7 +15,7 @@ internal class SQLiteDatabase
 
     internal void CloseDb() => db.Close();
 
-    internal bool IsConnected() => db.State == System.Data.ConnectionState.Open;
+    internal bool IsConnected => db.State == System.Data.ConnectionState.Open;
 
     internal void CreateDb(string path)
     {
@@ -106,7 +106,7 @@ internal class SQLiteDatabase
     }
 
 
-    internal List<Note> GetNotes(bool fetchDeleted)
+    internal IEnumerable<Note> GetNotes(bool fetchDeleted)
     {
         var result = new List<Note>();
 
@@ -131,7 +131,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal List<string> GetTags()
+    internal IEnumerable<string> GetTags()
     {
         var result = new List<string>();
 
@@ -163,7 +163,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal List<Note> SearchByTag(string tag, bool fetchDeleted)
+    internal IEnumerable<Note> SearchByTag(string tag, bool fetchDeleted)
     {
         var result = new List<Note>();
 
@@ -188,7 +188,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal List<Note> SearchByKeyword(string word, bool fetchDeleted)
+    internal IEnumerable<Note> SearchByKeyword(string word, bool fetchDeleted)
     {
         if (word == "") return [];
         var result = new List<Note>();
@@ -214,27 +214,27 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal void LinkTagsToNote(Int64 noteId, List<string> tags)
+    internal void LinkTagsToNote(Int64 noteId, IEnumerable<string> tags)
     {
-        if (tags.Count == 0) return;
+        if (tags.Count() == 0) return;
 
         using var tx = db.BeginTransaction();
-        tags.ForEach(tag =>
+        foreach (var tag in tags)
         {
             var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = ?;", tx, tag).ExecuteScalar() as Int64?;
             var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (?);", tx, tag).ExecuteScalar() as Int64? ?? -1) ?? -1;
             SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (?, ?);", tx, noteId, tagId).ExecuteNonQuery();
-        });
+        }
 
         tx.Commit();
     }
 
-    internal void UnlinkTagsFromNote(Int64 noteId, List<string> tags)
+    internal void UnlinkTagsFromNote(Int64 noteId, IEnumerable<string> tags)
     {
-        if (tags.Count == 0) return;
+        if (tags.Count() == 0) return;
 
         using var tx = db.BeginTransaction();
-        var IN = string.Join(",", Enumerable.Repeat("?", tags.Count)); // "?,?,?,?"
+        var IN = string.Join(",", Enumerable.Repeat("?", tags.Count())); // "?,?,?,?"
         new List<SqliteCommand>([
             // TODO repeated args may be wrong here
             SqlCmd($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, noteId, tags),

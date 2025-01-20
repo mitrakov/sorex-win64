@@ -1,4 +1,4 @@
-namespace SorexUI;
+namespace SorexUI.view;
 
 public partial class MainForm : Form
 {
