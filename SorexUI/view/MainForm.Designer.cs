@@ -38,7 +38,7 @@ namespace SorexUI.view
             textGlobalSearch = new TextBox();
             buttonNew = new Button();
             images = new ImageList(components);
-            panelRight = new Panel();
+            contentPanel = new FlowLayoutPanel();
             mainMenu = new MenuStrip();
             fileMenuItem = new ToolStripMenuItem();
             openRecentMenuItem = new ToolStripMenuItem();
@@ -126,13 +126,16 @@ namespace SorexUI.view
             images.TransparentColor = Color.Transparent;
             images.Images.SetKeyName(0, "square-plus.png");
             // 
-            // panelRight
+            // contentPanel
             // 
-            panelRight.Dock = DockStyle.Fill;
-            panelRight.Location = new Point(200, 28);
-            panelRight.Name = "panelRight";
-            panelRight.Size = new Size(806, 693);
-            panelRight.TabIndex = 1;
+            contentPanel.AutoScroll = true;
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.FlowDirection = FlowDirection.TopDown;
+            contentPanel.Location = new Point(200, 28);
+            contentPanel.Name = "contentPanel";
+            contentPanel.Size = new Size(806, 693);
+            contentPanel.TabIndex = 5;
+            contentPanel.WrapContents = false;
             // 
             // mainMenu
             // 
@@ -218,7 +221,7 @@ namespace SorexUI.view
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1006, 721);
-            Controls.Add(panelRight);
+            Controls.Add(contentPanel);
             Controls.Add(panelLeft);
             Controls.Add(mainMenu);
             MainMenuStrip = mainMenu;
@@ -241,7 +244,7 @@ namespace SorexUI.view
         }
 
         private Panel panelLeft;
-        private Panel panelRight;
+        private FlowLayoutPanel contentPanel;
         private FlowLayoutPanel tagsPanel;
         private Panel panelTop;
         private MenuStrip mainMenu;

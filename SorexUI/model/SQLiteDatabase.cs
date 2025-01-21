@@ -173,7 +173,7 @@ internal class SQLiteDatabase
           INNER JOIN notedata ON note_id = notedata.rowid
           INNER JOIN note_to_tag USING (note_id)
           INNER JOIN tag         USING (tag_id)
-          WHERE note_id IN (SELECT note_id FROM tag INNER JOIN note_to_tag USING (tag_id) WHERE name = ?)
+          WHERE note_id IN (SELECT note_id FROM tag INNER JOIN note_to_tag USING (tag_id) WHERE name = @0)
         """
         + (fetchDeleted ? "" : "AND NOT is_deleted ") +
         """
@@ -247,7 +247,8 @@ internal class SQLiteDatabase
     protected SqliteCommand SqlCmd(string query, params object[] args)
     {
         var cmd = new SqliteCommand(query, db);
-        cmd.Parameters.AddRange(args.Select(arg => new SqliteParameter { Value = arg }));
+        for (int i = 0; i < args.Length; i++)
+            cmd.Parameters.AddWithValue($"@{i}", args[i]);
         return cmd;
     }
 
