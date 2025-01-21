@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms.Integration;
+using SorexMarkdownLibrary;
 
 namespace SorexUI.view
 {
@@ -197,15 +198,15 @@ namespace SorexUI.view
         protected void InitializeComponents()
         {
             // WPF widget should be initialized separately because of the bug in Visual Studio (https://github.com/dotnet/winforms/issues/9443)
-            markdown = new SorexMarkdownLibrary.SorexMarkdown();
+            markdown = new();
             wpfWidget.Child = markdown;
             openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
         }
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TextBox editBox;
-        private System.Windows.Forms.Integration.ElementHost wpfWidget;
-        private SorexMarkdownLibrary.SorexMarkdown markdown;
+        private SplitContainer splitContainer1;
+        private TextBox editBox;
+        private ElementHost wpfWidget;
+        private SorexMarkdown markdown;
         private MenuStrip mainMenu;
         private ToolStripMenuItem fileMenuItem;
         private ToolStripMenuItem openRecentMenuItem;
