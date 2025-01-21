@@ -17,7 +17,20 @@ partial class MainForm : Form
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
-        MessageBox.Show(e.PropertyName);
+        tagsPanel.Controls.Clear();
+        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag => {
+            var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
+            btn.Click += OnTagClick;
+            return btn;
+        }).ToArray());
+    }
+
+    private void OnTagClick(object? sender, EventArgs e)
+    {
+        if (sender is Button btn)
+        {
+            MessageBox.Show(btn.Text);
+        }
     }
 
     private void OnRecentFileClick(object sender, EventArgs e)

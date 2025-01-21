@@ -63,16 +63,19 @@ namespace SorexUI.view
             panelLeft.Dock = DockStyle.Left;
             panelLeft.Location = new Point(0, 28);
             panelLeft.Name = "panelLeft";
-            panelLeft.Size = new Size(200, 422);
+            panelLeft.Size = new Size(200, 693);
             panelLeft.TabIndex = 0;
             // 
             // tagsPanel
             // 
+            tagsPanel.AutoScroll = true;
             tagsPanel.Dock = DockStyle.Fill;
+            tagsPanel.FlowDirection = FlowDirection.TopDown;
             tagsPanel.Location = new Point(0, 70);
             tagsPanel.Name = "tagsPanel";
-            tagsPanel.Size = new Size(200, 352);
-            tagsPanel.TabIndex = 1;
+            tagsPanel.Size = new Size(200, 623);
+            tagsPanel.TabIndex = 4;
+            tagsPanel.WrapContents = false;
             // 
             // panelTop
             // 
@@ -128,7 +131,7 @@ namespace SorexUI.view
             panelRight.Dock = DockStyle.Fill;
             panelRight.Location = new Point(200, 28);
             panelRight.Name = "panelRight";
-            panelRight.Size = new Size(600, 422);
+            panelRight.Size = new Size(806, 693);
             panelRight.TabIndex = 1;
             // 
             // mainMenu
@@ -137,7 +140,7 @@ namespace SorexUI.view
             mainMenu.Items.AddRange(new ToolStripItem[] { fileMenuItem, helpMenuItem });
             mainMenu.Location = new Point(0, 0);
             mainMenu.Name = "mainMenu";
-            mainMenu.Size = new Size(800, 28);
+            mainMenu.Size = new Size(1006, 28);
             mainMenu.TabIndex = 0;
             // 
             // fileMenuItem
@@ -150,49 +153,49 @@ namespace SorexUI.view
             // openRecentMenuItem
             // 
             openRecentMenuItem.Name = "openRecentMenuItem";
-            openRecentMenuItem.Size = new Size(224, 26);
+            openRecentMenuItem.Size = new Size(177, 26);
             openRecentMenuItem.Text = "Open Recent";
             // 
             // separator1
             // 
             separator1.Name = "separator1";
-            separator1.Size = new Size(221, 6);
+            separator1.Size = new Size(174, 6);
             // 
             // newFileMenuItem
             // 
             newFileMenuItem.Name = "newFileMenuItem";
-            newFileMenuItem.Size = new Size(224, 26);
+            newFileMenuItem.Size = new Size(177, 26);
             newFileMenuItem.Text = "New File...";
             newFileMenuItem.Click += OnNewFileClick;
             // 
             // openMenuItem
             // 
             openMenuItem.Name = "openMenuItem";
-            openMenuItem.Size = new Size(224, 26);
+            openMenuItem.Size = new Size(177, 26);
             openMenuItem.Text = "Open...";
             openMenuItem.Click += OnOpenFileClick;
             // 
             // separator2
             // 
             separator2.Name = "separator2";
-            separator2.Size = new Size(221, 6);
+            separator2.Size = new Size(174, 6);
             // 
             // closeFileMenuItem
             // 
             closeFileMenuItem.Name = "closeFileMenuItem";
-            closeFileMenuItem.Size = new Size(224, 26);
+            closeFileMenuItem.Size = new Size(177, 26);
             closeFileMenuItem.Text = "Close File";
             closeFileMenuItem.Click += OnCloseFileClick;
             // 
             // separator3
             // 
             separator3.Name = "separator3";
-            separator3.Size = new Size(221, 6);
+            separator3.Size = new Size(174, 6);
             // 
             // quitSorexMenuItem
             // 
             quitSorexMenuItem.Name = "quitSorexMenuItem";
-            quitSorexMenuItem.Size = new Size(224, 26);
+            quitSorexMenuItem.Size = new Size(177, 26);
             quitSorexMenuItem.Text = "Quit Sorex";
             quitSorexMenuItem.Click += OnQuitSorexClick;
             // 
@@ -206,7 +209,7 @@ namespace SorexUI.view
             // aboutSorexMenuItem
             // 
             aboutSorexMenuItem.Name = "aboutSorexMenuItem";
-            aboutSorexMenuItem.Size = new Size(224, 26);
+            aboutSorexMenuItem.Size = new Size(174, 26);
             aboutSorexMenuItem.Text = "About Sorex";
             aboutSorexMenuItem.Click += OnAboutSorexClick;
             // 
@@ -214,7 +217,7 @@ namespace SorexUI.view
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1006, 721);
             Controls.Add(panelRight);
             Controls.Add(panelLeft);
             Controls.Add(mainMenu);
