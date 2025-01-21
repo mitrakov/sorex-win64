@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms.Integration;
-using SorexMarkdownLibrary;
-
+﻿
 namespace SorexUI.view
 {
     partial class MainForm
@@ -31,9 +29,16 @@ namespace SorexUI.view
         /// </summary>
         private void InitializeComponent()
         {
-            splitContainer1 = new SplitContainer();
-            editBox = new TextBox();
-            wpfWidget = new ElementHost();
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            panelLeft = new Panel();
+            tagsPanel = new FlowLayoutPanel();
+            panelTop = new Panel();
+            checkShowArchive = new CheckBox();
+            textGlobalSearch = new TextBox();
+            buttonNew = new Button();
+            images = new ImageList(components);
+            panelRight = new Panel();
             mainMenu = new MenuStrip();
             fileMenuItem = new ToolStripMenuItem();
             openRecentMenuItem = new ToolStripMenuItem();
@@ -43,53 +48,88 @@ namespace SorexUI.view
             separator2 = new ToolStripSeparator();
             closeFileMenuItem = new ToolStripMenuItem();
             separator3 = new ToolStripSeparator();
-            exitMenuItem = new ToolStripMenuItem();
+            quitSorexMenuItem = new ToolStripMenuItem();
             helpMenuItem = new ToolStripMenuItem();
             aboutSorexMenuItem = new ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
+            panelLeft.SuspendLayout();
+            panelTop.SuspendLayout();
             mainMenu.SuspendLayout();
             SuspendLayout();
             // 
-            // splitContainer1
+            // panelLeft
             // 
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 28);
-            splitContainer1.Margin = new Padding(3, 4, 3, 4);
-            splitContainer1.Name = "splitContainer1";
+            panelLeft.Controls.Add(tagsPanel);
+            panelLeft.Controls.Add(panelTop);
+            panelLeft.Dock = DockStyle.Left;
+            panelLeft.Location = new Point(0, 28);
+            panelLeft.Name = "panelLeft";
+            panelLeft.Size = new Size(200, 422);
+            panelLeft.TabIndex = 0;
             // 
-            // splitContainer1.Panel1
+            // tagsPanel
             // 
-            splitContainer1.Panel1.Controls.Add(editBox);
+            tagsPanel.Dock = DockStyle.Fill;
+            tagsPanel.Location = new Point(0, 70);
+            tagsPanel.Name = "tagsPanel";
+            tagsPanel.Size = new Size(200, 352);
+            tagsPanel.TabIndex = 1;
             // 
-            // splitContainer1.Panel2
+            // panelTop
             // 
-            splitContainer1.Panel2.Controls.Add(wpfWidget);
-            splitContainer1.Size = new Size(800, 534);
-            splitContainer1.SplitterDistance = 266;
-            splitContainer1.TabIndex = 0;
+            panelTop.Controls.Add(checkShowArchive);
+            panelTop.Controls.Add(textGlobalSearch);
+            panelTop.Controls.Add(buttonNew);
+            panelTop.Dock = DockStyle.Top;
+            panelTop.Location = new Point(0, 0);
+            panelTop.Name = "panelTop";
+            panelTop.Size = new Size(200, 70);
+            panelTop.TabIndex = 0;
             // 
-            // editBox
+            // checkShowArchive
             // 
-            editBox.Dock = DockStyle.Fill;
-            editBox.Location = new Point(0, 0);
-            editBox.Margin = new Padding(3, 4, 3, 4);
-            editBox.Multiline = true;
-            editBox.Name = "editBox";
-            editBox.Size = new Size(266, 534);
-            editBox.TabIndex = 0;
-            editBox.TextChanged += EditBox_TextChanged;
+            checkShowArchive.AutoSize = true;
+            checkShowArchive.Location = new Point(76, 36);
+            checkShowArchive.Name = "checkShowArchive";
+            checkShowArchive.Size = new Size(118, 24);
+            checkShowArchive.TabIndex = 2;
+            checkShowArchive.Text = "Show archive";
+            checkShowArchive.UseVisualStyleBackColor = true;
             // 
-            // wpfWidget
+            // textGlobalSearch
             // 
-            wpfWidget.Dock = DockStyle.Fill;
-            wpfWidget.Location = new Point(0, 0);
-            wpfWidget.Margin = new Padding(3, 4, 3, 4);
-            wpfWidget.Name = "wpfWidget";
-            wpfWidget.Size = new Size(530, 534);
-            wpfWidget.TabIndex = 0;
+            textGlobalSearch.Location = new Point(66, 3);
+            textGlobalSearch.Name = "textGlobalSearch";
+            textGlobalSearch.PlaceholderText = "Global search...";
+            textGlobalSearch.Size = new Size(131, 27);
+            textGlobalSearch.TabIndex = 1;
+            textGlobalSearch.WordWrap = false;
+            // 
+            // buttonNew
+            // 
+            buttonNew.ImageIndex = 0;
+            buttonNew.ImageList = images;
+            buttonNew.Location = new Point(3, 3);
+            buttonNew.Name = "buttonNew";
+            buttonNew.Size = new Size(57, 59);
+            buttonNew.TabIndex = 0;
+            buttonNew.Text = "New";
+            buttonNew.TextImageRelation = TextImageRelation.ImageAboveText;
+            buttonNew.UseVisualStyleBackColor = true;
+            // 
+            // images
+            // 
+            images.ColorDepth = ColorDepth.Depth32Bit;
+            images.ImageStream = (ImageListStreamer)resources.GetObject("images.ImageStream");
+            images.TransparentColor = Color.Transparent;
+            images.Images.SetKeyName(0, "square-plus.png");
+            // 
+            // panelRight
+            // 
+            panelRight.Dock = DockStyle.Fill;
+            panelRight.Location = new Point(200, 28);
+            panelRight.Name = "panelRight";
+            panelRight.Size = new Size(600, 422);
+            panelRight.TabIndex = 1;
             // 
             // mainMenu
             // 
@@ -98,12 +138,11 @@ namespace SorexUI.view
             mainMenu.Location = new Point(0, 0);
             mainMenu.Name = "mainMenu";
             mainMenu.Size = new Size(800, 28);
-            mainMenu.TabIndex = 1;
-            mainMenu.Text = "mainMenu";
+            mainMenu.TabIndex = 0;
             // 
             // fileMenuItem
             // 
-            fileMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openRecentMenuItem, separator1, newFileMenuItem, openMenuItem, separator2, closeFileMenuItem, separator3, exitMenuItem });
+            fileMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openRecentMenuItem, separator1, newFileMenuItem, openMenuItem, separator2, closeFileMenuItem, separator3, quitSorexMenuItem });
             fileMenuItem.Name = "fileMenuItem";
             fileMenuItem.Size = new Size(46, 24);
             fileMenuItem.Text = "File";
@@ -143,19 +182,19 @@ namespace SorexUI.view
             closeFileMenuItem.Name = "closeFileMenuItem";
             closeFileMenuItem.Size = new Size(224, 26);
             closeFileMenuItem.Text = "Close File";
-            closeFileMenuItem.Click += OnCloseFile;
+            closeFileMenuItem.Click += OnCloseFileClick;
             // 
             // separator3
             // 
             separator3.Name = "separator3";
             separator3.Size = new Size(221, 6);
             // 
-            // exitMenuItem
+            // quitSorexMenuItem
             // 
-            exitMenuItem.Name = "exitMenuItem";
-            exitMenuItem.Size = new Size(224, 26);
-            exitMenuItem.Text = "Exit";
-            exitMenuItem.Click += OnExitClick;
+            quitSorexMenuItem.Name = "quitSorexMenuItem";
+            quitSorexMenuItem.Size = new Size(224, 26);
+            quitSorexMenuItem.Text = "Quit Sorex";
+            quitSorexMenuItem.Click += OnQuitSorexClick;
             // 
             // helpMenuItem
             // 
@@ -168,25 +207,23 @@ namespace SorexUI.view
             // 
             aboutSorexMenuItem.Name = "aboutSorexMenuItem";
             aboutSorexMenuItem.Size = new Size(224, 26);
-            aboutSorexMenuItem.Text = "About Sorex...";
+            aboutSorexMenuItem.Text = "About Sorex";
             aboutSorexMenuItem.Click += OnAboutSorexClick;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 562);
-            Controls.Add(splitContainer1);
+            ClientSize = new Size(800, 450);
+            Controls.Add(panelRight);
+            Controls.Add(panelLeft);
             Controls.Add(mainMenu);
             MainMenuStrip = mainMenu;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Sorex";
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel1.PerformLayout();
-            splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
+            panelLeft.ResumeLayout(false);
+            panelTop.ResumeLayout(false);
+            panelTop.PerformLayout();
             mainMenu.ResumeLayout(false);
             mainMenu.PerformLayout();
             ResumeLayout(false);
@@ -197,16 +234,13 @@ namespace SorexUI.view
 
         protected void InitializeComponents()
         {
-            // WPF widget should be initialized separately because of the bug in Visual Studio (https://github.com/dotnet/winforms/issues/9443)
-            markdown = new();
-            wpfWidget.Child = markdown;
             openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
         }
 
-        private SplitContainer splitContainer1;
-        private TextBox editBox;
-        private ElementHost wpfWidget;
-        private SorexMarkdown markdown;
+        private Panel panelLeft;
+        private Panel panelRight;
+        private FlowLayoutPanel tagsPanel;
+        private Panel panelTop;
         private MenuStrip mainMenu;
         private ToolStripMenuItem fileMenuItem;
         private ToolStripMenuItem openRecentMenuItem;
@@ -216,9 +250,12 @@ namespace SorexUI.view
         private ToolStripSeparator separator2;
         private ToolStripMenuItem closeFileMenuItem;
         private ToolStripSeparator separator3;
-        private ToolStripMenuItem exitMenuItem;
+        private ToolStripMenuItem quitSorexMenuItem;
         private ToolStripMenuItem helpMenuItem;
         private ToolStripMenuItem aboutSorexMenuItem;
+        private Button buttonNew;
+        private CheckBox checkShowArchive;
+        private TextBox textGlobalSearch;
+        private ImageList images;
     }
 }
-

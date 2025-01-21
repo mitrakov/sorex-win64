@@ -1,9 +1,12 @@
-﻿using SorexUI.model;
+﻿using System.ComponentModel;
+using SorexUI.model;
 
 namespace SorexUI.viewmodel;
 
-internal class MainViewModel
+internal class MainViewModel: INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     private readonly SQLiteDatabase db = new();
     private string? currentPath;
 
@@ -15,6 +18,7 @@ internal class MainViewModel
             db.OpenDb(path);
             currentPath = path;
             AddToRecentFilesList(path);
+            FirePropertyChanged();
         }
         else
         {
@@ -48,6 +52,7 @@ internal class MainViewModel
             db.CreateDb(path);
             currentPath = path;
             AddToRecentFilesList(path);
+            FirePropertyChanged();
         }
     }
 
@@ -55,6 +60,7 @@ internal class MainViewModel
     {
         db.CloseDb();
         currentPath = null;
+        FirePropertyChanged();
     }
 
     internal static IEnumerable<string> RecentFiles => user.Default.recentFiles.Cast<string>();
@@ -163,5 +169,10 @@ internal class MainViewModel
     {
         user.Default.recentFiles.Remove(item);
         user.Default.Save();
+    }
+
+    protected void FirePropertyChanged()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(currentPath));
     }
 }

@@ -1,20 +1,23 @@
+﻿using System.ComponentModel;
 using SorexUI.viewmodel;
 
 namespace SorexUI.view;
 
-public partial class MainForm : Form
+partial class MainForm : Form
 {
-    private readonly MainViewModel vm = new();
+    private MainViewModel vm;
 
-    public MainForm()
+    internal MainForm(MainViewModel vm)
     {
         InitializeComponent();
         InitializeComponents();
+        this.vm = vm;
+        vm.PropertyChanged += OnCurrentPathChanged;
     }
 
-    private void EditBox_TextChanged(object sender, EventArgs e)
+    private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
-        markdown.Markdown = editBox.Text;
+        MessageBox.Show(e.PropertyName);
     }
 
     private void OnRecentFileClick(object sender, EventArgs e)
@@ -27,9 +30,9 @@ public partial class MainForm : Form
 
     private void OnOpenFileClick(object sender, EventArgs e) => vm.OpenFile();
 
-    private void OnCloseFile(object sender, EventArgs e) => vm.CloseFile();
+    private void OnCloseFileClick(object sender, EventArgs e) => vm.CloseFile();
 
-    private void OnExitClick(object sender, EventArgs e)
+    private void OnQuitSorexClick(object sender, EventArgs e)
     {
         vm.CloseFile();
         Application.Exit();
