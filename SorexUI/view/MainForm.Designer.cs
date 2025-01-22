@@ -1,4 +1,6 @@
-﻿
+﻿using System.Windows.Forms.Integration;
+using SorexMarkdownLibrary;
+
 namespace SorexUI.view
 {
     partial class MainForm
@@ -38,7 +40,7 @@ namespace SorexUI.view
             textGlobalSearch = new TextBox();
             buttonNew = new Button();
             images = new ImageList(components);
-            contentPanel = new FlowLayoutPanel();
+            contentPanel = new Panel();
             mainMenu = new MenuStrip();
             fileMenuItem = new ToolStripMenuItem();
             openRecentMenuItem = new ToolStripMenuItem();
@@ -131,12 +133,10 @@ namespace SorexUI.view
             // 
             contentPanel.AutoScroll = true;
             contentPanel.Dock = DockStyle.Fill;
-            contentPanel.FlowDirection = FlowDirection.TopDown;
             contentPanel.Location = new Point(200, 28);
             contentPanel.Name = "contentPanel";
             contentPanel.Size = new Size(806, 693);
             contentPanel.TabIndex = 5;
-            contentPanel.WrapContents = false;
             // 
             // mainMenu
             // 
@@ -242,10 +242,11 @@ namespace SorexUI.view
         protected void InitializeComponents()
         {
             openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
+            contentPanel.Controls.Add(new ElementHost { Child = sorexMarkdown = new SorexMarkdown(), Dock = DockStyle.Fill });
         }
 
         private Panel panelLeft;
-        private FlowLayoutPanel contentPanel;
+        private Panel contentPanel;
         private FlowLayoutPanel tagsPanel;
         private Panel panelTop;
         private MenuStrip mainMenu;
@@ -264,5 +265,6 @@ namespace SorexUI.view
         private CheckBox checkShowArchive;
         private TextBox textGlobalSearch;
         private ImageList images;
+        private SorexMarkdown sorexMarkdown;
     }
 }

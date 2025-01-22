@@ -8,11 +8,9 @@
         <local:Data/>
     </UserControl.DataContext>
 
-    <mdxam:MarkdownScrollViewer
-        VerticalAlignment="Stretch"
-        HorizontalAlignment="Stretch"
-        ClickAction="SafetyDisplayWithRelativePath"
-        Markdown="{Binding Markdown}"
-        >
-    </mdxam:MarkdownScrollViewer>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Name="MainStackPanel"/>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms.Integration;
 using SorexUI.viewmodel;
-using SorexMarkdownLibrary;
 
 namespace SorexUI.view;
 
@@ -32,13 +30,7 @@ partial class MainForm : Form
     private void OnTagClick(object? sender, EventArgs e)
     {
         if (sender is Button btn)
-        {
-            var notes = vm.SearchByTag(btn.Text, checkShowArchive.Checked);
-            contentPanel.Controls.Clear();
-            contentPanel.Controls.AddRange(notes.Select(note =>
-                new ElementHost { Child = new SorexMarkdown { Markdown = note.data }, AutoSize = true }
-            ).ToArray());
-        }
+            sorexMarkdown.SetMarkdown(vm.SearchByTag(btn.Text, checkShowArchive.Checked).Select(note => note.data));
     }
 
     private void OnRecentFileClick(object sender, EventArgs e)
