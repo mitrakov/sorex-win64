@@ -8,9 +8,7 @@
         <local:Data/>
     </UserControl.DataContext>
 
-    <Grid>
-        <ScrollViewer>
-            <StackPanel Name="MainStackPanel"/>
-        </ScrollViewer>
-    </Grid>
+    <ScrollViewer>
+        <StackPanel Name="MainStackPanel"/>
+    </ScrollViewer>
 </UserControl>

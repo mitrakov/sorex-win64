@@ -76,7 +76,7 @@ namespace SorexUI.view
             tagsPanel.Location = new Point(0, 70);
             tagsPanel.Name = "tagsPanel";
             tagsPanel.Size = new Size(200, 623);
-            tagsPanel.TabIndex = 4;
+            tagsPanel.TabIndex = 3;
             tagsPanel.WrapContents = false;
             // 
             // panelTop
@@ -131,12 +131,11 @@ namespace SorexUI.view
             // 
             // contentPanel
             // 
-            contentPanel.AutoScroll = true;
             contentPanel.Dock = DockStyle.Fill;
             contentPanel.Location = new Point(200, 28);
             contentPanel.Name = "contentPanel";
             contentPanel.Size = new Size(806, 693);
-            contentPanel.TabIndex = 5;
+            contentPanel.TabIndex = 4;
             // 
             // mainMenu
             // 
