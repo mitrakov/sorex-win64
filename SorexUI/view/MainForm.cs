@@ -19,6 +19,7 @@ partial class MainForm : Form
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
+        Text = e.PropertyName;
         tagsPanel.Controls.Clear();
         tagsPanel.Controls.AddRange(vm.GetTags().Select(tag =>
         {
@@ -35,7 +36,7 @@ partial class MainForm : Form
             var notes = vm.SearchByTag(btn.Text, checkShowArchive.Checked);
             contentPanel.Controls.Clear();
             contentPanel.Controls.AddRange(notes.Select(note =>
-                new ElementHost { Child = new SorexMarkdown { Markdown = note.data } }
+                new ElementHost { Child = new SorexMarkdown { Markdown = note.data }, AutoSize = true }
             ).ToArray());
         }
     }
@@ -61,5 +62,10 @@ partial class MainForm : Form
     private void OnAboutSorexClick(object sender, EventArgs e)
     {
         MessageBox.Show("Sorex App"); // TODO FIXME message
+    }
+
+    private void onNewButtonClick(object sender, EventArgs e)
+    {
+        vm.OpenFile(@"C:\Users\Tommy\db\it.db");
     }
 }

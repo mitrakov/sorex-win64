@@ -118,6 +118,7 @@ namespace SorexUI.view
             buttonNew.Text = "New";
             buttonNew.TextImageRelation = TextImageRelation.ImageAboveText;
             buttonNew.UseVisualStyleBackColor = true;
+            buttonNew.Click += onNewButtonClick;
             // 
             // images
             // 
