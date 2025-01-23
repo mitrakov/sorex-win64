@@ -100,7 +100,7 @@ internal class MainViewModel: INotifyPropertyChanged
     internal void ArchiveNoteById(Int64 noteId)
     {
         if (!db.IsConnected) return;
-        if (MessageBox.Show("Are you sure you want to archive this note? It can be restored later", "Archive note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+        if (MessageBox.Show("Are you sure you want to archive this note?\nIt can be restored later", "Archive note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.SoftDeleteNote(noteId, true);
     }
 
@@ -113,7 +113,7 @@ internal class MainViewModel: INotifyPropertyChanged
     internal void DeleteNoteById(Int64 noteId)
     {
         if (!db.IsConnected) return;
-        if (MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+        if (MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.DeleteNote(noteId);
     }
 

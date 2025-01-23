@@ -7,6 +7,9 @@ using System.Windows.Media.Imaging;
 using MdXaml;
 
 namespace SorexMarkdownLibrary;
+
+public record class MarkdownContext(string markdown, Action onEdit, Action onArchive, Action onDelete);
+
 public partial class SorexMarkdown : UserControl
 {
     public SorexMarkdown()
@@ -14,44 +17,43 @@ public partial class SorexMarkdown : UserControl
         InitializeComponent();
     }
 
-    public void SetMarkdown(IEnumerable<string> mds)
+    public void SetMarkdown(IEnumerable<MarkdownContext> markdowns)
     {
         MainStackPanel.Children.Clear();
-        foreach (var md in mds)
+        foreach (var md in markdowns)
         {
+            // markdown viewer
             var viewer = new MarkdownScrollViewer
             {
+                Markdown = md.markdown,
+                MarkdownStyle = MarkdownStyle.GithubLike,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                ClickAction = ClickAction.SafetyDisplayWithRelativePath,
-                MarkdownStyle = MarkdownStyle.GithubLike,
-                Markdown = md,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                ClickAction = ClickAction.SafetyDisplayWithRelativePath,
             };
             viewer.PreviewMouseWheel += MarkdownScrollViewer_PreviewMouseWheel;
 
-            var buttonsPanel = new UniformGrid
+            // buttons panel
+            var buttons = new UniformGrid
             {
                 Rows = 1,
                 Columns = 3,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top
+                VerticalAlignment = VerticalAlignment.Top,
             };
-            buttonsPanel.Children.Add(MakeButton("#8eb5f7", "edit.png"));
-            buttonsPanel.Children.Add(MakeButton("#fcc18a", "archive.png"));
-            buttonsPanel.Children.Add(MakeButton("#ff655a", "delete.png"));
+            buttons.Children.Add(MakeButton("#8eb5f7", "edit.png", md.onEdit));
+            buttons.Children.Add(MakeButton("#fcc18a", "archive.png", md.onArchive));
+            buttons.Children.Add(MakeButton("#ff655a", "delete.png", md.onDelete));
 
+            // main grid
             var mainGrid = new Grid();
             mainGrid.Children.Add(viewer);
-            mainGrid.Children.Add(buttonsPanel);
+            mainGrid.Children.Add(buttons);
 
+            // add to VStack
             MainStackPanel.Children.Add(mainGrid);
         }
-    }
-
-    private void TitleBorder_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        MessageBox.Show("Hey hey");
     }
 
     // https://stackoverflow.com/a/16110178/2212849
@@ -64,25 +66,23 @@ public partial class SorexMarkdown : UserControl
         }
     }
 
-    private Border MakeButton(string hexColour, string imageName)
+    private static UIElement MakeButton(string hexColour, string imageName, Action onClick)
     {
-        var image = new Image
-        {
-            Source = new BitmapImage(new Uri($"/SorexMarkdownLibrary;component/images/{imageName}", UriKind.Relative)),
-            VerticalAlignment = VerticalAlignment.Center,
-            Height = 24,
-            Width = 24,
-        };
-
         var border = new Border
         {
-            CornerRadius = new CornerRadius(20),
+            CornerRadius = new(16),
             Background = new BrushConverter().ConvertFromString(hexColour) as Brush,
-            Margin = new Thickness(6),
-            Padding = new Thickness(6),
-            Child = image,
+            Margin = new(4),
+            Padding = new(6),
+            Child = new Image
+            {
+                Source = new BitmapImage(new Uri($"/SorexMarkdownLibrary;component/images/{imageName}", UriKind.Relative)),
+                VerticalAlignment = VerticalAlignment.Center,
+                Height = 18,
+                Width = 18,
+            },
         };
-        border.MouseDown += TitleBorder_MouseDown;
+        border.MouseDown += (s, e) => onClick();
 
         return border;
     }
