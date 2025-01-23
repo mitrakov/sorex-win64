@@ -8,7 +8,7 @@ using MdXaml;
 
 namespace SorexMarkdownLibrary;
 
-public record class MarkdownContext(string markdown, Action onEdit, Action onArchive, Action onDelete);
+public record class ContextMenu(string Markdown, bool IsArchived, string[] Tags, Action OnEdit, Action OnArchive, Action OnRestore, Action OnDelete);
 
 public partial class SorexMarkdown : UserControl
 {
@@ -17,7 +17,7 @@ public partial class SorexMarkdown : UserControl
         InitializeComponent();
     }
 
-    public void SetMarkdown(IEnumerable<MarkdownContext> markdowns)
+    public void SetMarkdown(IEnumerable<ContextMenu> markdowns)
     {
         MainStackPanel.Children.Clear();
         foreach (var md in markdowns)
@@ -25,7 +25,7 @@ public partial class SorexMarkdown : UserControl
             // markdown viewer
             var viewer = new MarkdownScrollViewer
             {
-                Markdown = md.markdown,
+                Markdown = md.Markdown,
                 MarkdownStyle = MarkdownStyle.GithubLike,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -38,13 +38,18 @@ public partial class SorexMarkdown : UserControl
             var buttons = new UniformGrid
             {
                 Rows = 1,
-                Columns = 3,
+                Columns = md.IsArchived ? 1 : 3,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
             };
-            buttons.Children.Add(MakeButton("#8eb5f7", "edit.png", md.onEdit));
-            buttons.Children.Add(MakeButton("#fcc18a", "archive.png", md.onArchive));
-            buttons.Children.Add(MakeButton("#ff655a", "delete.png", md.onDelete));
+            if (md.IsArchived)
+                buttons.Children.Add(MakeButton("#90ee90", "restore.png", md.OnRestore));
+            else
+            {
+                buttons.Children.Add(MakeButton("#8eb5f7", "edit.png", md.OnEdit));
+                buttons.Children.Add(MakeButton("#fcc18a", "archive.png", md.OnArchive));
+                buttons.Children.Add(MakeButton("#ff655a", "delete.png", md.OnDelete));
+            }
 
             // main grid
             var mainGrid = new Grid();

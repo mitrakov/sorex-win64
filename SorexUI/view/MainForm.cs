@@ -33,7 +33,15 @@ partial class MainForm : Form
         if (sender is Button btn)
         {
             var ctx = vm.SearchByTag(btn.Text, checkShowArchive.Checked).Select(note =>
-                new MarkdownContext(note.data, () => MessageBox.Show($"Edit {note.id}"), () => vm.ArchiveNoteById(note.id), () => vm.DeleteNoteById(note.id))
+                new ContextMenu(
+                    note.data,
+                    note.isDeleted,
+                    note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+                    () => MessageBox.Show($"Edit {note.id}"),
+                    () => vm.ArchiveNoteById(note.id),
+                    () => vm.RestoreNoteById(note.id),
+                    () => vm.DeleteNoteById(note.id)
+                )
             );
             sorexMarkdown.SetMarkdown(ctx);
         }

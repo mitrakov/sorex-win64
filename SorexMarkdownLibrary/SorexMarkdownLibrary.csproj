@@ -14,6 +14,7 @@
   <ItemGroup>
     <Resource Include="images\edit.png" />
     <Resource Include="images\archive.png" />
+    <Resource Include="images\restore.png" />
     <Resource Include="images\delete.png" />
   </ItemGroup>
 
