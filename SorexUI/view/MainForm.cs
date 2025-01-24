@@ -40,7 +40,7 @@ partial class MainForm : Form
                     note.data,
                     note.isDeleted,
                     note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-                    () => { if (editorMode) SetReadMode(); else SetEditMode(); },
+                    () => { if (editorMode) SetReadMode(); else SetEditMode(note.data); },
                     () => vm.ArchiveNoteById(note.id),
                     () => vm.RestoreNoteById(note.id),
                     () => vm.DeleteNoteById(note.id)
@@ -78,10 +78,11 @@ partial class MainForm : Form
     {
         vm.OpenFile(@"C:\Users\Tommy\db\it.db");
     }
-
-    protected void SetEditMode()
+        
+    protected void SetEditMode(string data)
     {
         editorMode = true;
+        textBoxEdit.Text = data.ReplaceLineEndings();
         contentPanel.Controls.Clear();
         contentPanel.Controls.AddRange([panelBottom, editSplitPanel]);
     }

@@ -165,6 +165,7 @@ namespace SorexUI.view
             // 
             // textBoxEdit
             // 
+            textBoxEdit.AcceptsReturn = true;
             textBoxEdit.Dock = DockStyle.Fill;
             textBoxEdit.Location = new Point(0, 0);
             textBoxEdit.Multiline = true;
