@@ -329,7 +329,7 @@ namespace SorexUI.view
 
         private ElementHost wpfHostSingle;
         private ElementHost wpfHostMulti;
-        private SorexMarkdown sorexMarkdownMulti;
+        private SorexMarkdownMulti sorexMarkdownMulti;
         private SorexMarkdownSingle sorexMarkdownSingle;
         private Panel panelLeft;
         private Panel contentPanel;

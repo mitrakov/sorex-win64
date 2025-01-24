@@ -9,9 +9,9 @@ namespace SorexMarkdownLibrary;
 
 public record class ContextMenu(string Markdown, bool IsArchived, string[] Tags, Action OnEdit, Action OnArchive, Action OnRestore, Action OnDelete);
 
-public partial class SorexMarkdown : UserControl
+public partial class SorexMarkdownMulti : UserControl
 {
-    public SorexMarkdown() => InitializeComponent();
+    public SorexMarkdownMulti() => InitializeComponent();
 
     public void SetMarkdown(IEnumerable<ContextMenu> markdowns)
     {
