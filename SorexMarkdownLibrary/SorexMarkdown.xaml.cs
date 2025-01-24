@@ -12,10 +12,7 @@ public record class ContextMenu(string Markdown, bool IsArchived, string[] Tags,
 
 public partial class SorexMarkdown : UserControl
 {
-    public SorexMarkdown()
-    {
-        InitializeComponent();
-    }
+    public SorexMarkdown() => InitializeComponent();
 
     public void SetMarkdown(IEnumerable<ContextMenu> markdowns)
     {
@@ -34,39 +31,13 @@ public partial class SorexMarkdown : UserControl
             };
             viewer.PreviewMouseWheel += MarkdownScrollViewer_PreviewMouseWheel;
 
-            // buttons/tags panel
-            var tagsAndButtons = new Grid
-            {
-                //Rows = 1,
-                //Columns = md.Tags.Length + (md.IsArchived ? 1 : 3), // all tags + 1 or 3 tagsAndButtons
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top,
-            };
-            tagsAndButtons.RowDefinitions.Add(new());
-            for (int j = 0; j < md.Tags.Length + (md.IsArchived ? 1 : 3); j++)
-                tagsAndButtons.ColumnDefinitions.Add(new());
-
-            // tags
+            // tags/buttons panel
             var i = 0;
-            for (; i < md.Tags.Length; i++)
-            {
-                var label = new TextBlock { Text = $"🏷️  {md.Tags[i]}" };
-                var border = new Border
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    BorderBrush = new LinearGradientBrush(new([new(Colors.Purple, 0), new(Colors.Blue, 0.5), new(Colors.Purple, 1)]), 45),
-                    Child = label,
-                    CornerRadius = new(10),
-                    BorderThickness = new(0.7),
-                    Margin = new(4),
-                    Padding = new(4, 1, 4, 2),
-                };
-                border.SetValue(Grid.RowProperty, 0);
-                border.SetValue(Grid.ColumnProperty, i);
-                tagsAndButtons.Children.Add(border);
-            }
+            var tagsAndButtons = new Grid { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top };
+            Enumerable.Range(0, md.Tags.Length + (md.IsArchived ? 1 : 3)).ToList().ForEach(t => tagsAndButtons.ColumnDefinitions.Add(new())); // all tags + 1 or 3 buttons
 
-            // buttons
+            md.Tags.ToList().ForEach(tag => tagsAndButtons.Children.Add(MakeTag(i++, tag)));
+
             if (md.IsArchived)
                 tagsAndButtons.Children.Add(MakeButton(i++, "#90ee90", "restore.png", md.OnRestore));
             else
@@ -94,6 +65,23 @@ public partial class SorexMarkdown : UserControl
         }
     }
 
+    private static UIElement MakeTag(int columnIdx, string text)
+    {
+        var border = new Border
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            BorderBrush = new LinearGradientBrush(new([new(Colors.Purple, 0), new(Colors.Blue, 0.5), new(Colors.Purple, 1)]), 45),
+            Child = new TextBlock { Text = $"🏷️  {text}" },
+            CornerRadius = new(10),
+            BorderThickness = new(0.7),
+            Margin = new(4),
+            Padding = new(4, 1, 4, 2),
+        };
+        border.SetValue(Grid.ColumnProperty, columnIdx);
+
+        return border;
+    }
+
     private static UIElement MakeButton(int columnIdx, string hexColour, string imageName, Action onClick)
     {
         var border = new Border
@@ -110,7 +98,6 @@ public partial class SorexMarkdown : UserControl
                 Width = 18,
             },
         };
-        border.SetValue(Grid.RowProperty, 0);
         border.SetValue(Grid.ColumnProperty, columnIdx);
         border.MouseDown += (s, e) => onClick();
 
