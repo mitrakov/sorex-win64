@@ -42,7 +42,11 @@ namespace SorexUI.view
             images = new ImageList(components);
             contentPanel = new Panel();
             editSplitPanel = new SplitContainer();
+            textBoxEdit = new TextBox();
             panelBottom = new FlowLayoutPanel();
+            labelTags = new Label();
+            textboxTags = new TextBox();
+            buttonSave = new Button();
             mainMenu = new MenuStrip();
             fileMenuItem = new ToolStripMenuItem();
             openRecentMenuItem = new ToolStripMenuItem();
@@ -55,10 +59,6 @@ namespace SorexUI.view
             quitSorexMenuItem = new ToolStripMenuItem();
             helpMenuItem = new ToolStripMenuItem();
             aboutSorexMenuItem = new ToolStripMenuItem();
-            textBox1 = new TextBox();
-            labelTags = new Label();
-            textboxTags = new TextBox();
-            buttonSave = new Button();
             panelLeft.SuspendLayout();
             panelTop.SuspendLayout();
             contentPanel.SuspendLayout();
@@ -158,10 +158,20 @@ namespace SorexUI.view
             // 
             // editSplitPanel.Panel1
             // 
-            editSplitPanel.Panel1.Controls.Add(textBox1);
+            editSplitPanel.Panel1.Controls.Add(textBoxEdit);
             editSplitPanel.Size = new Size(806, 641);
             editSplitPanel.SplitterDistance = 268;
             editSplitPanel.TabIndex = 1;
+            // 
+            // textBoxEdit
+            // 
+            textBoxEdit.Dock = DockStyle.Fill;
+            textBoxEdit.Location = new Point(0, 0);
+            textBoxEdit.Multiline = true;
+            textBoxEdit.Name = "textBoxEdit";
+            textBoxEdit.Size = new Size(268, 641);
+            textBoxEdit.TabIndex = 5;
+            textBoxEdit.TextChanged += TextBoxEditTextChanged;
             // 
             // panelBottom
             // 
@@ -173,6 +183,31 @@ namespace SorexUI.view
             panelBottom.Name = "panelBottom";
             panelBottom.Size = new Size(806, 52);
             panelBottom.TabIndex = 0;
+            // 
+            // labelTags
+            // 
+            labelTags.AutoSize = true;
+            labelTags.Location = new Point(3, 0);
+            labelTags.Name = "labelTags";
+            labelTags.Size = new Size(41, 20);
+            labelTags.TabIndex = 0;
+            labelTags.Text = "Tags:";
+            // 
+            // textboxTags
+            // 
+            textboxTags.Location = new Point(50, 3);
+            textboxTags.Name = "textboxTags";
+            textboxTags.Size = new Size(125, 27);
+            textboxTags.TabIndex = 1;
+            // 
+            // buttonSave
+            // 
+            buttonSave.Location = new Point(181, 3);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(94, 29);
+            buttonSave.TabIndex = 2;
+            buttonSave.Text = "Add Note";
+            buttonSave.UseVisualStyleBackColor = true;
             // 
             // mainMenu
             // 
@@ -253,40 +288,6 @@ namespace SorexUI.view
             aboutSorexMenuItem.Text = "About Sorex";
             aboutSorexMenuItem.Click += OnAboutSorexClick;
             // 
-            // textBox1
-            // 
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(0, 0);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(268, 641);
-            textBox1.TabIndex = 5;
-            // 
-            // labelTags
-            // 
-            labelTags.AutoSize = true;
-            labelTags.Location = new Point(3, 0);
-            labelTags.Name = "labelTags";
-            labelTags.Size = new Size(41, 20);
-            labelTags.TabIndex = 0;
-            labelTags.Text = "Tags:";
-            // 
-            // textboxTags
-            // 
-            textboxTags.Location = new Point(50, 3);
-            textboxTags.Name = "textboxTags";
-            textboxTags.Size = new Size(125, 27);
-            textboxTags.TabIndex = 1;
-            // 
-            // buttonSave
-            // 
-            buttonSave.Location = new Point(181, 3);
-            buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(94, 29);
-            buttonSave.TabIndex = 2;
-            buttonSave.Text = "Add Note";
-            buttonSave.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -319,11 +320,17 @@ namespace SorexUI.view
         protected void InitializeComponents()
         {
             openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
-            wpfHost = new ElementHost { Child = sorexMarkdown = new SorexMarkdown(), Dock = DockStyle.Fill };
+            sorexMarkdownMulti = new();
+            sorexMarkdownSingle = new();
+            wpfHostSingle = new() { Child = sorexMarkdownSingle, Dock = DockStyle.Fill };
+            wpfHostMulti = new() { Child = sorexMarkdownMulti, Dock = DockStyle.Fill };
+            editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
         }
 
-        private ElementHost wpfHost;
-        private SorexMarkdown sorexMarkdown;
+        private ElementHost wpfHostSingle;
+        private ElementHost wpfHostMulti;
+        private SorexMarkdown sorexMarkdownMulti;
+        private SorexMarkdownSingle sorexMarkdownSingle;
         private Panel panelLeft;
         private Panel contentPanel;
         private FlowLayoutPanel tagsPanel;
@@ -346,7 +353,7 @@ namespace SorexUI.view
         private ImageList images;
         private SplitContainer editSplitPanel;
         private FlowLayoutPanel panelBottom;
-        private TextBox textBox1;
+        private TextBox textBoxEdit;
         private Label labelTags;
         private TextBox textboxTags;
         private Button buttonSave;

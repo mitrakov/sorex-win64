@@ -17,6 +17,8 @@ partial class MainForm : Form
         vm.PropertyChanged += OnCurrentPathChanged;
     }
 
+    private void TextBoxEditTextChanged(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textBoxEdit.Text;
+
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
         Text = $"Sorex ({e.PropertyName})";
@@ -44,7 +46,7 @@ partial class MainForm : Form
                     () => vm.DeleteNoteById(note.id)
                 )
             );
-            sorexMarkdown.SetMarkdown(ctx);
+            sorexMarkdownMulti.SetMarkdown(ctx);
             SetReadMode();
         }
     }
@@ -88,6 +90,6 @@ partial class MainForm : Form
     {
         editorMode = false;
         contentPanel.Controls.Clear();
-        contentPanel.Controls.Add(wpfHost);
+        contentPanel.Controls.Add(wpfHostMulti);
     }
 }
