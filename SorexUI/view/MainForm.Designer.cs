@@ -320,10 +320,8 @@ namespace SorexUI.view
         protected void InitializeComponents()
         {
             openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
-            sorexMarkdownMulti = new();
-            sorexMarkdownSingle = new();
-            wpfHostSingle = new() { Child = sorexMarkdownSingle, Dock = DockStyle.Fill };
-            wpfHostMulti = new() { Child = sorexMarkdownMulti, Dock = DockStyle.Fill };
+            wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
+            wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
             editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
         }
 
