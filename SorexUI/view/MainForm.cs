@@ -17,7 +17,11 @@ partial class MainForm : Form
         vm.PropertyChanged += OnCurrentPathChanged;
     }
 
-    private void TextBoxEditTextChanged(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textBoxEdit.Text;
+    private void TextBoxEditTextChanged(object sender, EventArgs e)
+    {
+        sorexMarkdownSingle.Markdown = textBoxEdit.Text;
+        textBoxEdit.ScrollBars = GetTextDimensions(textBoxEdit).Height > textBoxEdit.Height - 50 ? ScrollBars.Vertical : ScrollBars.None;
+    }
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -78,7 +82,7 @@ partial class MainForm : Form
     {
         vm.OpenFile(@"C:\Users\Tommy\db\it.db");
     }
-        
+
     protected void SetEditMode(string data)
     {
         editorMode = true;
@@ -92,5 +96,16 @@ partial class MainForm : Form
         editorMode = false;
         contentPanel.Controls.Clear();
         contentPanel.Controls.Add(wpfHostMulti);
+    }
+
+    // https://ru.stackoverflow.com/a/1284002/216481
+    protected static Size GetTextDimensions(TextBox textBox)
+    {
+        Font font = textBox.Font;
+        string stringData = textBox.Text;
+        int width = textBox.Width;
+        using Graphics g = textBox.CreateGraphics();
+        SizeF sizeF = g.MeasureString(stringData, font, width);
+        return new Size((int)Math.Ceiling(sizeF.Width), (int)Math.Ceiling(sizeF.Height));
     }
 }

@@ -160,7 +160,7 @@ namespace SorexUI.view
             // 
             editSplitPanel.Panel1.Controls.Add(textBoxEdit);
             editSplitPanel.Size = new Size(806, 641);
-            editSplitPanel.SplitterDistance = 268;
+            editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
             // textBoxEdit
@@ -170,7 +170,7 @@ namespace SorexUI.view
             textBoxEdit.Location = new Point(0, 0);
             textBoxEdit.Multiline = true;
             textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(268, 641);
+            textBoxEdit.Size = new Size(403, 641);
             textBoxEdit.TabIndex = 5;
             textBoxEdit.TextChanged += TextBoxEditTextChanged;
             // 
