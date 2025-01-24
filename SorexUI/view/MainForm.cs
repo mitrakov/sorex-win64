@@ -6,7 +6,8 @@ namespace SorexUI.view;
 
 partial class MainForm : Form
 {
-    private MainViewModel vm;
+    private readonly MainViewModel vm;
+    private bool editorMode = false;
 
     internal MainForm(MainViewModel vm)
     {
@@ -18,7 +19,7 @@ partial class MainForm : Form
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Text = e.PropertyName;
+        Text = $"Sorex ({e.PropertyName})";
         tagsPanel.Controls.Clear();
         tagsPanel.Controls.AddRange(vm.GetTags().Select(tag =>
         {
@@ -37,13 +38,14 @@ partial class MainForm : Form
                     note.data,
                     note.isDeleted,
                     note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-                    () => MessageBox.Show($"Edit {note.id}"),
+                    () => { if (editorMode) SetReadMode(); else SetEditMode(); },
                     () => vm.ArchiveNoteById(note.id),
                     () => vm.RestoreNoteById(note.id),
                     () => vm.DeleteNoteById(note.id)
                 )
             );
             sorexMarkdown.SetMarkdown(ctx);
+            SetReadMode();
         }
     }
 
@@ -70,8 +72,22 @@ partial class MainForm : Form
         MessageBox.Show("Sorex App"); // TODO FIXME message
     }
 
-    private void onNewButtonClick(object sender, EventArgs e)
+    private void OnNewButtonClick(object sender, EventArgs e)
     {
         vm.OpenFile(@"C:\Users\Tommy\db\it.db");
+    }
+
+    protected void SetEditMode()
+    {
+        editorMode = true;
+        contentPanel.Controls.Clear();
+        contentPanel.Controls.AddRange([panelBottom, editSplitPanel]);
+    }
+
+    protected void SetReadMode()
+    {
+        editorMode = false;
+        contentPanel.Controls.Clear();
+        contentPanel.Controls.Add(wpfHost);
     }
 }
