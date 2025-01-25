@@ -20,7 +20,6 @@ partial class MainForm : Form
     private void TextBoxEditTextChanged(object sender, EventArgs e)
     {
         sorexMarkdownSingle.Markdown = textBoxEdit.Text;
-        textBoxEdit.ScrollBars = GetTextDimensions(textBoxEdit).Height > textBoxEdit.Height - 50 ? ScrollBars.Vertical : ScrollBars.None;
     }
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)

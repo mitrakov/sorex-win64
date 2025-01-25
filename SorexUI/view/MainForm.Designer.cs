@@ -42,7 +42,7 @@ namespace SorexUI.view
             images = new ImageList(components);
             contentPanel = new Panel();
             editSplitPanel = new SplitContainer();
-            textBoxEdit = new TextBox();
+            textBoxEdit = new RichTextBox();
             panelBottom = new FlowLayoutPanel();
             labelTags = new Label();
             textboxTags = new TextBox();
@@ -159,19 +159,18 @@ namespace SorexUI.view
             // editSplitPanel.Panel1
             // 
             editSplitPanel.Panel1.Controls.Add(textBoxEdit);
-            editSplitPanel.Size = new Size(806, 641);
+            editSplitPanel.Size = new Size(20, 20);
             editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
             // textBoxEdit
             // 
-            textBoxEdit.AcceptsReturn = true;
             textBoxEdit.Dock = DockStyle.Fill;
             textBoxEdit.Location = new Point(0, 0);
-            textBoxEdit.Multiline = true;
             textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(403, 641);
+            textBoxEdit.Size = new Size(403, 352);
             textBoxEdit.TabIndex = 5;
+            textBoxEdit.Text = "";
             textBoxEdit.TextChanged += TextBoxEditTextChanged;
             // 
             // panelBottom
@@ -180,7 +179,7 @@ namespace SorexUI.view
             panelBottom.Controls.Add(textboxTags);
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
-            panelBottom.Location = new Point(0, 641);
+            panelBottom.Location = new Point(0, 352);
             panelBottom.Name = "panelBottom";
             panelBottom.Size = new Size(806, 52);
             panelBottom.TabIndex = 0;
@@ -352,9 +351,9 @@ namespace SorexUI.view
         private ImageList images;
         private SplitContainer editSplitPanel;
         private FlowLayoutPanel panelBottom;
-        private TextBox textBoxEdit;
         private Label labelTags;
         private TextBox textboxTags;
         private Button buttonSave;
+        private RichTextBox textBoxEdit;
     }
 }
