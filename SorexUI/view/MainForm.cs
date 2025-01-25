@@ -17,10 +17,7 @@ partial class MainForm : Form
         vm.PropertyChanged += OnCurrentPathChanged;
     }
 
-    private void TextBoxEditTextChanged(object sender, EventArgs e)
-    {
-        sorexMarkdownSingle.Markdown = textBoxEdit.Text;
-    }
+    private void TextBoxEditTextChanged(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textBoxEdit.Text;
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -87,7 +84,7 @@ partial class MainForm : Form
         editorMode = true;
         textBoxEdit.Text = data.ReplaceLineEndings();
         contentPanel.Controls.Clear();
-        contentPanel.Controls.AddRange([panelBottom, editSplitPanel]);
+        contentPanel.Controls.Add(editModePanel);
     }
 
     protected void SetReadMode()
@@ -95,16 +92,5 @@ partial class MainForm : Form
         editorMode = false;
         contentPanel.Controls.Clear();
         contentPanel.Controls.Add(wpfHostMulti);
-    }
-
-    // https://ru.stackoverflow.com/a/1284002/216481
-    protected static Size GetTextDimensions(TextBox textBox)
-    {
-        Font font = textBox.Font;
-        string stringData = textBox.Text;
-        int width = textBox.Width;
-        using Graphics g = textBox.CreateGraphics();
-        SizeF sizeF = g.MeasureString(stringData, font, width);
-        return new Size((int)Math.Ceiling(sizeF.Width), (int)Math.Ceiling(sizeF.Height));
     }
 }

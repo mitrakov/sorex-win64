@@ -41,6 +41,7 @@ namespace SorexUI.view
             buttonNew = new Button();
             images = new ImageList(components);
             contentPanel = new Panel();
+            editModePanel = new Panel();
             editSplitPanel = new SplitContainer();
             textBoxEdit = new RichTextBox();
             panelBottom = new FlowLayoutPanel();
@@ -62,6 +63,7 @@ namespace SorexUI.view
             panelLeft.SuspendLayout();
             panelTop.SuspendLayout();
             contentPanel.SuspendLayout();
+            editModePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)editSplitPanel).BeginInit();
             editSplitPanel.Panel1.SuspendLayout();
             editSplitPanel.SuspendLayout();
@@ -83,12 +85,10 @@ namespace SorexUI.view
             // 
             tagsPanel.AutoScroll = true;
             tagsPanel.Dock = DockStyle.Fill;
-            tagsPanel.FlowDirection = FlowDirection.TopDown;
             tagsPanel.Location = new Point(0, 70);
             tagsPanel.Name = "tagsPanel";
             tagsPanel.Size = new Size(200, 623);
             tagsPanel.TabIndex = 3;
-            tagsPanel.WrapContents = false;
             // 
             // panelTop
             // 
@@ -142,13 +142,22 @@ namespace SorexUI.view
             // 
             // contentPanel
             // 
-            contentPanel.Controls.Add(editSplitPanel);
-            contentPanel.Controls.Add(panelBottom);
+            contentPanel.Controls.Add(editModePanel);
             contentPanel.Dock = DockStyle.Fill;
             contentPanel.Location = new Point(200, 28);
             contentPanel.Name = "contentPanel";
             contentPanel.Size = new Size(806, 693);
             contentPanel.TabIndex = 4;
+            // 
+            // editModePanel
+            // 
+            editModePanel.Controls.Add(editSplitPanel);
+            editModePanel.Controls.Add(panelBottom);
+            editModePanel.Dock = DockStyle.Fill;
+            editModePanel.Location = new Point(0, 0);
+            editModePanel.Name = "editModePanel";
+            editModePanel.Size = new Size(806, 693);
+            editModePanel.TabIndex = 2;
             // 
             // editSplitPanel
             // 
@@ -159,7 +168,7 @@ namespace SorexUI.view
             // editSplitPanel.Panel1
             // 
             editSplitPanel.Panel1.Controls.Add(textBoxEdit);
-            editSplitPanel.Size = new Size(20, 20);
+            editSplitPanel.Size = new Size(806, 641);
             editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
@@ -168,7 +177,7 @@ namespace SorexUI.view
             textBoxEdit.Dock = DockStyle.Fill;
             textBoxEdit.Location = new Point(0, 0);
             textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(403, 352);
+            textBoxEdit.Size = new Size(373, 641);
             textBoxEdit.TabIndex = 5;
             textBoxEdit.Text = "";
             textBoxEdit.TextChanged += TextBoxEditTextChanged;
@@ -179,7 +188,7 @@ namespace SorexUI.view
             panelBottom.Controls.Add(textboxTags);
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
-            panelBottom.Location = new Point(0, 352);
+            panelBottom.Location = new Point(0, 641);
             panelBottom.Name = "panelBottom";
             panelBottom.Size = new Size(806, 52);
             panelBottom.TabIndex = 0;
@@ -303,8 +312,8 @@ namespace SorexUI.view
             panelTop.ResumeLayout(false);
             panelTop.PerformLayout();
             contentPanel.ResumeLayout(false);
+            editModePanel.ResumeLayout(false);
             editSplitPanel.Panel1.ResumeLayout(false);
-            editSplitPanel.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)editSplitPanel).EndInit();
             editSplitPanel.ResumeLayout(false);
             panelBottom.ResumeLayout(false);
@@ -331,7 +340,7 @@ namespace SorexUI.view
         private SorexMarkdownSingle sorexMarkdownSingle;
         private Panel panelLeft;
         private Panel contentPanel;
-        private FlowLayoutPanel tagsPanel;
+        private Panel tagsPanel;
         private Panel panelTop;
         private MenuStrip mainMenu;
         private ToolStripMenuItem fileMenuItem;
@@ -355,5 +364,6 @@ namespace SorexUI.view
         private TextBox textboxTags;
         private Button buttonSave;
         private RichTextBox textBoxEdit;
+        private Panel editModePanel;
     }
 }
