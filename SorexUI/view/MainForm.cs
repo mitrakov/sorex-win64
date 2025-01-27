@@ -9,10 +9,12 @@ partial class MainForm : Form
 {
     private readonly MainViewModel vm;
 
-    private long? currentNoteId;                        // if present, it's an ID of the note in edit mode
-    private string oldTags = "";                        // old comma-separated tags for edit mode (to calc tags diff)
-    private string search = "";                         // search by tag name (SearchMode.tag), keyword (.keyword) or ID (.id)
-    private SearchMode searchMode = SearchMode.tag;     // how to search notes (by clicking tag, by full-text, etc)
+    private long? currentNoteId;                      // if present, it's an ID of the note in edit mode
+    private string oldTags = "";                      // old comma-separated tags for edit mode (to calc tags diff)
+    private IEnumerable<Note> notes = [];             // in view mode, DB notes array for markdown view
+    private string search = "";                       // search by tag name (SearchMode.tag), keyword (.keyword) or ID (.id)
+    private EditorMode editorMode = EditorMode.edit;  // edit or view mode
+    private SearchMode searchMode = SearchMode.tag;   // how to search notes (by clicking tag, by full-text, etc)
 
     internal MainForm(MainViewModel vm)
     {
@@ -20,6 +22,34 @@ partial class MainForm : Form
         InitializeComponents();
         this.vm = vm;
         vm.PropertyChanged += OnCurrentPathChanged;
+    }
+
+    private void UpdateUI()
+    {
+        // tagsPanel
+        tagsPanel.Controls.Clear();
+        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag =>
+        {
+            var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
+            btn.Click += OnTagClick;
+            return btn;
+        }).ToArray());
+
+        // contentPanel
+        contentPanel.Controls.Clear();
+        contentPanel.Controls.Add(editorMode == EditorMode.edit ? editModePanel : wpfHostMulti);
+
+        // notes markdown
+        var ctx = notes.Select(note => new ContextMenu(
+            note.data,
+            note.isDeleted,
+            note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+            () => SetEditMode(note.id, note.data, note.tags),
+            () => { vm.ArchiveNoteById(note.id); SetReadMode(search, searchMode); },
+            () => { vm.RestoreNoteById(note.id); SetReadMode(search, searchMode); },
+            () => { vm.DeleteNoteById(note.id); SetReadMode(search, searchMode); }
+        ));
+        sorexMarkdownMulti.SetMarkdown(ctx);
     }
 
     private void OnTextboxEditChange(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textboxEdit.Text;
@@ -33,23 +63,10 @@ partial class MainForm : Form
         SetEditMode();
     }
 
-    private void OnSaveNoteClick(object sender, EventArgs e)
-    {
-        var newId = vm.SaveNote(currentNoteId, textboxEdit.Text.ReplaceLineEndings("\n"), textboxTags.Text.Trim(), oldTags);
-        if (newId != null)
-            SetReadMode($"{newId}", SearchMode.id);
-    }
-
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
     {
         Text = $"Sorex ({e.PropertyName})";
-        tagsPanel.Controls.Clear();
-        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag =>
-        {
-            var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
-            btn.Click += OnTagClick;
-            return btn;
-        }).ToArray());
+        UpdateUI();
     }
 
     private void OnTagClick(object? sender, EventArgs e)
@@ -81,49 +98,46 @@ partial class MainForm : Form
         MessageBox.Show("Sorex App"); // TODO FIXME message
     }
 
+    private void SaveNote(object sender, EventArgs e)
+    {
+        var newId = vm.SaveNote(currentNoteId, textboxEdit.Text.ReplaceLineEndings("\n"), textboxTags.Text.Trim(), oldTags);
+        if (newId != null)
+            SetReadMode($"{newId}", SearchMode.id);
+    }
+
     protected void SetEditMode(long? noteId = null, string text = "", string tags = "")
     {
-        contentPanel.Controls.Clear();
-        contentPanel.Controls.Add(editModePanel);
-
         textboxEdit.Text = text;
         textboxTags.Text = tags;
         textboxSearch.Text = "";
         currentNoteId = noteId;
         oldTags = tags;
-        sorexMarkdownMulti.SetMarkdown([]);
+        notes = [];
         search = "";
+        editorMode = EditorMode.edit;
         searchMode = SearchMode.tag;
+
+        UpdateUI();
     }
 
     protected void SetReadMode(string search, SearchMode by)
     {
-        contentPanel.Controls.Clear();
-        contentPanel.Controls.Add(wpfHostMulti);
-
         textboxEdit.Text = "";
         textboxTags.Text = "";
-        textboxSearch.Text = "";
+        textboxSearch.Text = textboxSearch.Text;
         currentNoteId = null;
         oldTags = "";
-        sorexMarkdownSingle.Markdown = "";
+        notes = by == SearchMode.tag ? vm.SearchByTag(search, checkShowArchive.Checked) :
+                by == SearchMode.keyword ? vm.SearchByKeyword(search, checkShowArchive.Checked) :
+                by == SearchMode.id ? new[] { vm.SearchByID(long.Parse(search)) }.OfType<Note>() : [];
         this.search = search;
+        editorMode = EditorMode.read;
         searchMode = by;
 
-        var notes = by == SearchMode.tag ? vm.SearchByTag(search, checkShowArchive.Checked) :
-                    by == SearchMode.keyword ? vm.SearchByKeyword(search, checkShowArchive.Checked) :
-                    by == SearchMode.id ? new[] { vm.SearchByID(long.Parse(search)) }.OfType<Note>() : [];
-        var ctx = notes.Select(note => new ContextMenu(
-            note.data,
-            note.isDeleted,
-            note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-            () => SetEditMode(note.id, note.data, note.tags),
-            () => { vm.ArchiveNoteById(note.id); SetReadMode(search, searchMode); },
-            () => { vm.RestoreNoteById(note.id); SetReadMode(search, searchMode); },
-            () => { vm.DeleteNoteById(note.id); SetReadMode(search, searchMode); }
-        ));
-        sorexMarkdownMulti.SetMarkdown(ctx);
+        UpdateUI();
     }
 }
+
+enum EditorMode { read, edit }
 
 enum SearchMode { tag, keyword, id }

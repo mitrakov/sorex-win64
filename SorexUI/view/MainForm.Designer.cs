@@ -221,7 +221,7 @@ namespace SorexUI.view
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Add Note";
             buttonSave.UseVisualStyleBackColor = true;
-            buttonSave.Click += OnSaveNoteClick;
+            buttonSave.Click += SaveNote;
             // 
             // mainMenu
             // 
