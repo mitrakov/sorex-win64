@@ -175,9 +175,10 @@ namespace SorexUI.view
             // textBoxEdit
             // 
             textBoxEdit.Dock = DockStyle.Fill;
+            textBoxEdit.Font = new Font("Courier New", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             textBoxEdit.Location = new Point(0, 0);
             textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(373, 641);
+            textBoxEdit.Size = new Size(403, 641);
             textBoxEdit.TabIndex = 5;
             textBoxEdit.Text = "";
             textBoxEdit.TextChanged += TextBoxEditTextChanged;
@@ -340,7 +341,6 @@ namespace SorexUI.view
         private SorexMarkdownSingle sorexMarkdownSingle;
         private Panel panelLeft;
         private Panel contentPanel;
-        private Panel tagsPanel;
         private Panel panelTop;
         private MenuStrip mainMenu;
         private ToolStripMenuItem fileMenuItem;
@@ -365,5 +365,6 @@ namespace SorexUI.view
         private Button buttonSave;
         private RichTextBox textBoxEdit;
         private Panel editModePanel;
+        private FlowLayoutPanel tagsPanel;
     }
 }
