@@ -50,6 +50,9 @@ partial class MainForm : Form
             () => { vm.DeleteNoteById(note.id); SetReadMode(search, searchMode); }
         ));
         sorexMarkdownMulti.SetMarkdown(ctx);
+
+        // bottom button
+        buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
     }
 
     private void OnTextboxEditChange(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textboxEdit.Text;

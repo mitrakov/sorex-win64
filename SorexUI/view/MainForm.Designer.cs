@@ -169,7 +169,7 @@ namespace SorexUI.view
             // editSplitPanel.Panel1
             // 
             editSplitPanel.Panel1.Controls.Add(textboxEdit);
-            editSplitPanel.Size = new Size(806, 651);
+            editSplitPanel.Size = new Size(806, 653);
             editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
@@ -179,7 +179,7 @@ namespace SorexUI.view
             textboxEdit.Font = new Font("Courier New", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             textboxEdit.Location = new Point(0, 0);
             textboxEdit.Name = "textboxEdit";
-            textboxEdit.Size = new Size(403, 651);
+            textboxEdit.Size = new Size(403, 653);
             textboxEdit.TabIndex = 5;
             textboxEdit.Text = "";
             textboxEdit.TextChanged += OnTextboxEditChange;
@@ -190,15 +190,15 @@ namespace SorexUI.view
             panelBottom.Controls.Add(textboxTags);
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
-            panelBottom.Location = new Point(0, 651);
+            panelBottom.Location = new Point(0, 652);
             panelBottom.Name = "panelBottom";
-            panelBottom.Size = new Size(806, 42);
+            panelBottom.Size = new Size(806, 40);
             panelBottom.TabIndex = 6;
             // 
             // labelTags
             // 
             labelTags.AutoSize = true;
-            labelTags.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelTags.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             labelTags.Location = new Point(6, 8);
             labelTags.Name = "labelTags";
             labelTags.Size = new Size(47, 23);
@@ -214,9 +214,10 @@ namespace SorexUI.view
             // 
             // buttonSave
             // 
+            buttonSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             buttonSave.Location = new Point(325, 5);
             buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(94, 29);
+            buttonSave.Size = new Size(120, 29);
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Add Note";
             buttonSave.UseVisualStyleBackColor = true;
