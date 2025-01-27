@@ -190,7 +190,7 @@ namespace SorexUI.view
             panelBottom.Controls.Add(textboxTags);
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
-            panelBottom.Location = new Point(0, 652);
+            panelBottom.Location = new Point(0, 653);
             panelBottom.Name = "panelBottom";
             panelBottom.Size = new Size(806, 40);
             panelBottom.TabIndex = 6;
