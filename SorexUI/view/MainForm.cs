@@ -54,8 +54,6 @@ partial class MainForm : Form
 
     private void OnTextboxEditChange(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textboxEdit.Text;
 
-    private void OnTextboxTagsChange(object sender, EventArgs e) => oldTags = textboxTags.Text.Trim();
-
     private void OnCheckboxShowArchiveChange(object sender, EventArgs e) => SetReadMode(search, searchMode);
 
     private void OnNewButtonClick(object sender, EventArgs e)

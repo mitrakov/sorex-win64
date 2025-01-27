@@ -235,9 +235,9 @@ internal class SQLiteDatabase
 
         using var tx = db.BeginTransaction();
         var IN = string.Join(",", Enumerable.Range(1, tags.Count()).Select(i => $"@{i}")); // "@1,@2,@3,@4"
+        object[] varargs = tags.ToArray<object>().Prepend(noteId).ToArray();               // [noteId, tag0, tag1, ...]
         new List<SqliteCommand>([
-            // TODO repeated args may be wrong here
-            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = @0 AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, noteId, tags),
+            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = @0 AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, varargs),
             SqlCmd( "DELETE FROM tag WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
         ]).ForEach(cmd => cmd.ExecuteNonQuery());
 

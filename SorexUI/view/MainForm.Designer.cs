@@ -211,7 +211,6 @@ namespace SorexUI.view
             textboxTags.Name = "textboxTags";
             textboxTags.Size = new Size(248, 27);
             textboxTags.TabIndex = 1;
-            textboxTags.TextChanged += OnTextboxTagsChange;
             // 
             // buttonSave
             // 
