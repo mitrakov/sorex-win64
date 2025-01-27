@@ -37,13 +37,13 @@ namespace SorexUI.view
             tagsPanel = new FlowLayoutPanel();
             panelTop = new Panel();
             checkShowArchive = new CheckBox();
-            textGlobalSearch = new TextBox();
+            textboxSearch = new TextBox();
             buttonNew = new Button();
             images = new ImageList(components);
             contentPanel = new Panel();
             editModePanel = new Panel();
             editSplitPanel = new SplitContainer();
-            textBoxEdit = new RichTextBox();
+            textboxEdit = new RichTextBox();
             panelBottom = new Panel();
             labelTags = new Label();
             textboxTags = new TextBox();
@@ -93,7 +93,7 @@ namespace SorexUI.view
             // panelTop
             // 
             panelTop.Controls.Add(checkShowArchive);
-            panelTop.Controls.Add(textGlobalSearch);
+            panelTop.Controls.Add(textboxSearch);
             panelTop.Controls.Add(buttonNew);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(0, 0);
@@ -110,15 +110,16 @@ namespace SorexUI.view
             checkShowArchive.TabIndex = 2;
             checkShowArchive.Text = "Show archive";
             checkShowArchive.UseVisualStyleBackColor = true;
+            checkShowArchive.CheckedChanged += OnCheckboxShowArchiveChange;
             // 
-            // textGlobalSearch
+            // textboxSearch
             // 
-            textGlobalSearch.Location = new Point(66, 3);
-            textGlobalSearch.Name = "textGlobalSearch";
-            textGlobalSearch.PlaceholderText = "Global search...";
-            textGlobalSearch.Size = new Size(131, 27);
-            textGlobalSearch.TabIndex = 1;
-            textGlobalSearch.WordWrap = false;
+            textboxSearch.Location = new Point(66, 3);
+            textboxSearch.Name = "textboxSearch";
+            textboxSearch.PlaceholderText = "Global search...";
+            textboxSearch.Size = new Size(131, 27);
+            textboxSearch.TabIndex = 1;
+            textboxSearch.WordWrap = false;
             // 
             // buttonNew
             // 
@@ -167,21 +168,21 @@ namespace SorexUI.view
             // 
             // editSplitPanel.Panel1
             // 
-            editSplitPanel.Panel1.Controls.Add(textBoxEdit);
+            editSplitPanel.Panel1.Controls.Add(textboxEdit);
             editSplitPanel.Size = new Size(806, 651);
             editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
-            // textBoxEdit
+            // textboxEdit
             // 
-            textBoxEdit.Dock = DockStyle.Fill;
-            textBoxEdit.Font = new Font("Courier New", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            textBoxEdit.Location = new Point(0, 0);
-            textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(403, 651);
-            textBoxEdit.TabIndex = 5;
-            textBoxEdit.Text = "";
-            textBoxEdit.TextChanged += TextBoxEditTextChanged;
+            textboxEdit.Dock = DockStyle.Fill;
+            textboxEdit.Font = new Font("Courier New", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            textboxEdit.Location = new Point(0, 0);
+            textboxEdit.Name = "textboxEdit";
+            textboxEdit.Size = new Size(403, 651);
+            textboxEdit.TabIndex = 5;
+            textboxEdit.Text = "";
+            textboxEdit.TextChanged += OnTextboxEditChange;
             // 
             // panelBottom
             // 
@@ -210,6 +211,7 @@ namespace SorexUI.view
             textboxTags.Name = "textboxTags";
             textboxTags.Size = new Size(248, 27);
             textboxTags.TabIndex = 1;
+            textboxTags.TextChanged += OnTextboxTagsChange;
             // 
             // buttonSave
             // 
@@ -219,6 +221,7 @@ namespace SorexUI.view
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Add Note";
             buttonSave.UseVisualStyleBackColor = true;
+            buttonSave.Click += OnSaveNoteClick;
             // 
             // mainMenu
             // 
@@ -357,13 +360,13 @@ namespace SorexUI.view
         private ToolStripMenuItem aboutSorexMenuItem;
         private Button buttonNew;
         private CheckBox checkShowArchive;
-        private TextBox textGlobalSearch;
+        private TextBox textboxSearch;
         private ImageList images;
         private SplitContainer editSplitPanel;
         private Panel panelBottom;
         private TextBox textboxTags;
         private Button buttonSave;
-        private RichTextBox textBoxEdit;
+        private RichTextBox textboxEdit;
         private Panel editModePanel;
         private FlowLayoutPanel tagsPanel;
         private Label labelTags;
