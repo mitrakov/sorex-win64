@@ -44,7 +44,7 @@ namespace SorexUI.view
             editModePanel = new Panel();
             editSplitPanel = new SplitContainer();
             textBoxEdit = new RichTextBox();
-            panelBottom = new FlowLayoutPanel();
+            panelBottom = new Panel();
             labelTags = new Label();
             textboxTags = new TextBox();
             buttonSave = new Button();
@@ -168,7 +168,7 @@ namespace SorexUI.view
             // editSplitPanel.Panel1
             // 
             editSplitPanel.Panel1.Controls.Add(textBoxEdit);
-            editSplitPanel.Size = new Size(806, 641);
+            editSplitPanel.Size = new Size(806, 651);
             editSplitPanel.SplitterDistance = 403;
             editSplitPanel.TabIndex = 1;
             // 
@@ -178,7 +178,7 @@ namespace SorexUI.view
             textBoxEdit.Font = new Font("Courier New", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             textBoxEdit.Location = new Point(0, 0);
             textBoxEdit.Name = "textBoxEdit";
-            textBoxEdit.Size = new Size(403, 641);
+            textBoxEdit.Size = new Size(403, 651);
             textBoxEdit.TabIndex = 5;
             textBoxEdit.Text = "";
             textBoxEdit.TextChanged += TextBoxEditTextChanged;
@@ -189,30 +189,31 @@ namespace SorexUI.view
             panelBottom.Controls.Add(textboxTags);
             panelBottom.Controls.Add(buttonSave);
             panelBottom.Dock = DockStyle.Bottom;
-            panelBottom.Location = new Point(0, 641);
+            panelBottom.Location = new Point(0, 651);
             panelBottom.Name = "panelBottom";
-            panelBottom.Size = new Size(806, 52);
-            panelBottom.TabIndex = 0;
+            panelBottom.Size = new Size(806, 42);
+            panelBottom.TabIndex = 6;
             // 
             // labelTags
             // 
             labelTags.AutoSize = true;
-            labelTags.Location = new Point(3, 0);
+            labelTags.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelTags.Location = new Point(6, 8);
             labelTags.Name = "labelTags";
-            labelTags.Size = new Size(41, 20);
-            labelTags.TabIndex = 0;
+            labelTags.Size = new Size(47, 23);
+            labelTags.TabIndex = 3;
             labelTags.Text = "Tags:";
             // 
             // textboxTags
             // 
-            textboxTags.Location = new Point(50, 3);
+            textboxTags.Location = new Point(61, 6);
             textboxTags.Name = "textboxTags";
-            textboxTags.Size = new Size(125, 27);
+            textboxTags.Size = new Size(248, 27);
             textboxTags.TabIndex = 1;
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(181, 3);
+            buttonSave.Location = new Point(325, 5);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(94, 29);
             buttonSave.TabIndex = 2;
@@ -359,12 +360,12 @@ namespace SorexUI.view
         private TextBox textGlobalSearch;
         private ImageList images;
         private SplitContainer editSplitPanel;
-        private FlowLayoutPanel panelBottom;
-        private Label labelTags;
+        private Panel panelBottom;
         private TextBox textboxTags;
         private Button buttonSave;
         private RichTextBox textBoxEdit;
         private Panel editModePanel;
         private FlowLayoutPanel tagsPanel;
+        private Label labelTags;
     }
 }
