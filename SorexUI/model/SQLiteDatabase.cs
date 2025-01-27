@@ -68,8 +68,8 @@ internal class SQLiteDatabase
     internal Int64 InsertNote(string data)
     {
         using var tx = db.BeginTransaction();
-        var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES;", tx).ExecuteScalar() as Int64? ?? -1;
-        SqlCmd("INSERT INTO notedata (rowid, data) VALUES (?, ?);", tx, noteId, data).ExecuteScalar();
+        var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES RETURNING note_id;", tx).ExecuteScalar() as Int64? ?? -1;
+        SqlCmd("INSERT INTO notedata (rowid, data) VALUES (@0, @1);", tx, noteId, data).ExecuteScalar();
 
         tx.Commit();
         return noteId;
@@ -80,8 +80,8 @@ internal class SQLiteDatabase
         using var tx = db.BeginTransaction();
 
         new List<SqliteCommand>([
-            SqlCmd("UPDATE notedata SET data = ? WHERE rowid = ?;", tx, data, noteId),
-            SqlCmd("UPDATE note SET updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", tx, noteId)
+            SqlCmd("UPDATE notedata SET data = @0 WHERE rowid = @1;", tx, data, noteId),
+            SqlCmd("UPDATE note SET updated_at = CURRENT_TIMESTAMP WHERE note_id = @0;", tx, noteId)
         ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
         tx.Commit();
@@ -89,7 +89,7 @@ internal class SQLiteDatabase
 
     internal void SoftDeleteNote(Int64 noteId, bool deleted)
     {
-        SqlCmd("UPDATE note SET is_deleted = ?, updated_at = CURRENT_TIMESTAMP WHERE note_id = ?;", deleted, noteId).ExecuteNonQuery();
+        SqlCmd("UPDATE note SET is_deleted = @0, updated_at = CURRENT_TIMESTAMP WHERE note_id = @1;", deleted, noteId).ExecuteNonQuery();
     }
 
     internal void DeleteNote(Int64 noteId)
@@ -97,8 +97,8 @@ internal class SQLiteDatabase
         using var tx = db.BeginTransaction();
 
         new List<SqliteCommand>([
-            SqlCmd("DELETE FROM note     WHERE note_id = ?;", tx, noteId),
-            SqlCmd("DELETE FROM notedata WHERE rowid = ?;", tx, noteId),
+            SqlCmd("DELETE FROM note     WHERE note_id = @0;", tx, noteId),
+            SqlCmd("DELETE FROM notedata WHERE rowid = @0;", tx, noteId),
             SqlCmd("DELETE FROM tag      WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
         ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
@@ -152,7 +152,7 @@ internal class SQLiteDatabase
           INNER JOIN notedata ON note_id = notedata.rowid
           INNER JOIN note_to_tag USING (note_id)
           INNER JOIN tag         USING (tag_id)
-          WHERE note_id = ?
+          WHERE note_id = @0
           GROUP BY note_id
           ;
         """;
@@ -199,7 +199,7 @@ internal class SQLiteDatabase
           INNER JOIN notedata ON note_id = notedata.rowid
           INNER JOIN note_to_tag USING (note_id)
           INNER JOIN tag         USING (tag_id)
-          WHERE data MATCH ?
+          WHERE data MATCH @0
         """
         + (fetchDeleted ? "" : "AND NOT is_deleted ") +
         """
@@ -221,9 +221,9 @@ internal class SQLiteDatabase
         using var tx = db.BeginTransaction();
         foreach (var tag in tags)
         {
-            var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = ?;", tx, tag).ExecuteScalar() as Int64?;
-            var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (?);", tx, tag).ExecuteScalar() as Int64? ?? -1) ?? -1;
-            SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (?, ?);", tx, noteId, tagId).ExecuteNonQuery();
+            var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = @0;", tx, tag).ExecuteScalar() as Int64?;
+            var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (@0) RETURNING tag_id;", tx, tag).ExecuteScalar() as Int64? ?? -1) ?? -1;
+            SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (@0, @1);", tx, noteId, tagId).ExecuteNonQuery();
         }
 
         tx.Commit();
@@ -234,10 +234,10 @@ internal class SQLiteDatabase
         if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
-        var IN = string.Join(",", Enumerable.Repeat("?", tags.Count())); // "?,?,?,?"
+        var IN = string.Join(",", Enumerable.Range(1, tags.Count()).Select(i => $"@{i}")); // "@1,@2,@3,@4"
         new List<SqliteCommand>([
             // TODO repeated args may be wrong here
-            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = ? AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, noteId, tags),
+            SqlCmd($"DELETE FROM note_to_tag WHERE note_id = @0 AND tag_id IN (SELECT tag_id FROM tag WHERE name IN ({IN}));", tx, noteId, tags),
             SqlCmd( "DELETE FROM tag WHERE tag_id NOT IN (SELECT DISTINCT tag_id FROM note_to_tag);", tx)
         ]).ForEach(cmd => cmd.ExecuteNonQuery());
 
@@ -255,7 +255,8 @@ internal class SQLiteDatabase
     protected SqliteCommand SqlCmd(string query, SqliteTransaction tx, params object[] args)
     {
         var cmd = new SqliteCommand(query, db, tx);
-        cmd.Parameters.AddRange(args.Select(arg => new SqliteParameter { Value = arg }));
+        for (int i = 0; i < args.Length; i++)
+            cmd.Parameters.AddWithValue($"@{i}", args[i]);
         return cmd;
     }
 }
