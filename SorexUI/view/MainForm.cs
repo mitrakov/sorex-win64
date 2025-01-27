@@ -59,9 +59,24 @@ partial class MainForm : Form
 
     private void OnCheckboxShowArchiveChange(object sender, EventArgs e) => SetReadMode(search, searchMode);
 
-    private void OnNewButtonClick(object sender, EventArgs e)
+    private void OnNewButtonClick(object sender, EventArgs e) => SetEditMode();
+
+    private void OnTextboxSearchKeyDown(object sender, KeyEventArgs e)
     {
-        SetEditMode();
+        if (e.KeyCode == Keys.Enter)
+        {
+            SetReadMode(textboxSearch.Text, SearchMode.keyword);
+            e.SuppressKeyPress = true; // avoid beep sound
+        }
+    }
+
+    private void OnTextboxTagsKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            buttonSave.PerformClick();
+            e.SuppressKeyPress = true; // avoid beep sound
+        }
     }
 
     private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)

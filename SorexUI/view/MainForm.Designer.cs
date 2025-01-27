@@ -120,6 +120,7 @@ namespace SorexUI.view
             textboxSearch.Size = new Size(131, 27);
             textboxSearch.TabIndex = 1;
             textboxSearch.WordWrap = false;
+            textboxSearch.KeyDown += OnTextboxSearchKeyDown;
             // 
             // buttonNew
             // 
@@ -211,6 +212,7 @@ namespace SorexUI.view
             textboxTags.Name = "textboxTags";
             textboxTags.Size = new Size(248, 27);
             textboxTags.TabIndex = 1;
+            textboxTags.KeyDown += OnTextboxTagsKeyDown;
             // 
             // buttonSave
             // 
