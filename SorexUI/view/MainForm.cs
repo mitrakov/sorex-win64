@@ -134,6 +134,7 @@ partial class MainForm : Form {
         searchMode = SearchMode.tag;
 
         UpdateUI();
+        textboxEdit.Focus();
     }
 
     protected void SetReadMode(string search, SearchMode by, bool updateTagBtns = false) {
