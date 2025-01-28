@@ -65,17 +65,17 @@ internal class SQLiteDatabase
         tx.Commit(); // TODO check if necessary
     }
 
-    internal Int64 InsertNote(string data)
+    internal long InsertNote(string data)
     {
         using var tx = db.BeginTransaction();
-        var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES RETURNING note_id;", tx).ExecuteScalar() as Int64? ?? -1;
+        var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES RETURNING note_id;", tx).ExecuteScalar() as long? ?? -1;
         SqlCmd("INSERT INTO notedata (rowid, data) VALUES (@0, @1);", tx, noteId, data).ExecuteScalar();
 
         tx.Commit();
         return noteId;
     }
 
-    internal void UpdateNote(Int64 noteId, string data)
+    internal void UpdateNote(long noteId, string data)
     {
         using var tx = db.BeginTransaction();
 
@@ -87,12 +87,12 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    internal void SoftDeleteNote(Int64 noteId, bool deleted)
+    internal void SoftDeleteNote(long noteId, bool deleted)
     {
         SqlCmd("UPDATE note SET is_deleted = @0, updated_at = CURRENT_TIMESTAMP WHERE note_id = @1;", deleted, noteId).ExecuteNonQuery();
     }
 
-    internal void DeleteNote(Int64 noteId)
+    internal void DeleteNote(long noteId)
     {
         using var tx = db.BeginTransaction();
 
@@ -142,7 +142,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal Note? SearchByID(Int64 id)
+    internal Note? SearchByID(long id)
     {
         Note? result = null;
 
@@ -214,22 +214,22 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal void LinkTagsToNote(Int64 noteId, IEnumerable<string> tags)
+    internal void LinkTagsToNote(long noteId, IEnumerable<string> tags)
     {
         if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
         foreach (var tag in tags)
         {
-            var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = @0;", tx, tag).ExecuteScalar() as Int64?;
-            var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (@0) RETURNING tag_id;", tx, tag).ExecuteScalar() as Int64? ?? -1) ?? -1;
+            var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = @0;", tx, tag).ExecuteScalar() as long?;
+            var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (@0) RETURNING tag_id;", tx, tag).ExecuteScalar() as long? ?? -1) ?? -1;
             SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (@0, @1);", tx, noteId, tagId).ExecuteNonQuery();
         }
 
         tx.Commit();
     }
 
-    internal void UnlinkTagsFromNote(Int64 noteId, IEnumerable<string> tags)
+    internal void UnlinkTagsFromNote(long noteId, IEnumerable<string> tags)
     {
         if (!tags.Any()) return;
 
