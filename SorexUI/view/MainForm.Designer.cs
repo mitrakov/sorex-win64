@@ -29,8 +29,7 @@ namespace SorexUI.view
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panelLeft = new Panel();
@@ -316,6 +315,7 @@ namespace SorexUI.view
             MainMenuStrip = mainMenu;
             Name = "MainForm";
             Text = "Sorex";
+            WindowState = FormWindowState.Maximized;
             panelLeft.ResumeLayout(false);
             panelTop.ResumeLayout(false);
             panelTop.PerformLayout();
