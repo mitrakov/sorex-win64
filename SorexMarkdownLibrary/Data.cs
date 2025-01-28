@@ -3,16 +3,12 @@ using System.Runtime.CompilerServices;
 
 namespace SorexMarkdownLibrary;
 
-internal class Data : INotifyPropertyChanged
-{
+internal class Data : INotifyPropertyChanged {
     private string _markdown = "";
-    public string Markdown
-    {
+    public string Markdown {
         get { return _markdown; }
-        set
-        {
-            if (_markdown != value)
-            {
+        set {
+            if (_markdown != value) {
                 _markdown = value;
                 FirePropertyChanged();
             }

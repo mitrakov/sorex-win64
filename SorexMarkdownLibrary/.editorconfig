@@ -157,13 +157,13 @@ csharp_style_allow_embedded_statements_on_same_line_experimental = true
 #### C# Formatting Rules ####
 
 # New line preferences
-csharp_new_line_before_catch = true
-csharp_new_line_before_else = true
-csharp_new_line_before_finally = true
-csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_before_catch = false
+csharp_new_line_before_else = false
+csharp_new_line_before_finally = false
+csharp_new_line_before_members_in_anonymous_types = false
 csharp_new_line_before_members_in_object_initializers = true
-csharp_new_line_before_open_brace = all
-csharp_new_line_between_query_expression_clauses = true
+csharp_new_line_before_open_brace = none
+csharp_new_line_between_query_expression_clauses = false
 
 # Indentation preferences
 csharp_indent_block_contents = true
@@ -247,3 +247,20 @@ dotnet_naming_style.begins_with_i.capitalization = pascal_case
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
 indent_size = 4
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+dotnet_style_prefer_auto_properties = true:silent
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
+dotnet_style_prefer_compound_assignment = true:suggestion
+dotnet_style_prefer_simplified_interpolation = true:suggestion
+dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion
+end_of_line = lf
+insert_final_newline = true
