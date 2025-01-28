@@ -27,6 +27,7 @@ public partial class SorexMarkdownMulti : UserControl
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 ClickAction = ClickAction.SafetyDisplayWithRelativePath,
+                Opacity = md.IsArchived ? 0.6 : 1,
             };
             viewer.PreviewMouseWheel += MarkdownScrollViewer_PreviewMouseWheel;
 
@@ -35,7 +36,7 @@ public partial class SorexMarkdownMulti : UserControl
             var tagsAndButtons = new Grid { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top };
             Enumerable.Range(0, md.Tags.Length + (md.IsArchived ? 1 : 3)).ToList().ForEach(t => tagsAndButtons.ColumnDefinitions.Add(new())); // all tags + 1 or 3 buttons
 
-            md.Tags.ToList().ForEach(tag => tagsAndButtons.Children.Add(MakeTag(i++, tag)));
+            md.Tags.ToList().ForEach(tag => tagsAndButtons.Children.Add(MakeTag(i++, tag, md.IsArchived)));
 
             if (md.IsArchived)
                 tagsAndButtons.Children.Add(MakeButton(i++, "#90ee90", "restore.png", md.OnRestore));
@@ -64,7 +65,7 @@ public partial class SorexMarkdownMulti : UserControl
         }
     }
 
-    private static UIElement MakeTag(int columnIdx, string text)
+    private static UIElement MakeTag(int columnIdx, string text, bool transparent)
     {
         var border = new Border
         {
@@ -75,6 +76,7 @@ public partial class SorexMarkdownMulti : UserControl
             BorderThickness = new(0.7),
             Margin = new(4),
             Padding = new(4, 1, 4, 2),
+            Opacity = transparent ? 0.6 : 1,
         };
         border.SetValue(Grid.ColumnProperty, columnIdx);
 
