@@ -210,6 +210,7 @@ namespace SorexUI.view
             // 
             textboxTags.Location = new Point(61, 6);
             textboxTags.Name = "textboxTags";
+            textboxTags.PlaceholderText = "Tag1, Tag2, ...";
             textboxTags.Size = new Size(248, 27);
             textboxTags.TabIndex = 1;
             textboxTags.KeyDown += OnTextboxTagsKeyDown;
