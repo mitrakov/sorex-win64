@@ -16,7 +16,7 @@ partial class MainForm : Form {
 
     internal MainForm(MainViewModel vm) {
         this.vm = vm;
-        vm.PropertyChanged += (s, e) => UpdateUI();
+        vm.PropertyChanged += (s, e) => UpdateUI(updateTagBtns: true);
 
         InitializeComponent();
         // due to a bug in UI Designer, these ElementHosts should be handled manually
@@ -28,14 +28,16 @@ partial class MainForm : Form {
         UpdateUI();
     }
 
-    private void UpdateUI() {
+    private void UpdateUI(bool updateTagBtns = false) {
         // tagsPanel
-        tagsPanel.Controls.Clear();
-        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag => {
-            var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
-            btn.Click += (s, e) => SetReadMode(tag, SearchMode.tag);
-            return btn;
-        }).ToArray());
+        if (updateTagBtns) {
+            tagsPanel.Controls.Clear();
+            tagsPanel.Controls.AddRange(vm.GetTags().Select(tag => {
+                var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
+                btn.Click += (s, e) => SetReadMode(tag, SearchMode.tag);
+                return btn;
+            }).ToArray());
+        }
 
         // contentPanel
         contentPanel.Controls.Clear();
@@ -49,7 +51,7 @@ partial class MainForm : Form {
             () => SetEditMode(note.Id, note.Data, note.Tags),
             () => { vm.ArchiveNoteById(note.Id); SetReadMode(search, searchMode); },
             () => { vm.RestoreNoteById(note.Id); SetReadMode(search, searchMode); },
-            () => { vm.DeleteNoteById(note.Id); SetReadMode(search, searchMode); }
+            () => { vm.DeleteNoteById(note.Id); SetReadMode(search, searchMode, updateTagBtns: true); }
         ));
         sorexMarkdownMulti.SetMarkdown(ctx);
 
@@ -117,7 +119,7 @@ partial class MainForm : Form {
     private void SaveNote(object sender, EventArgs e) {
         var newId = vm.SaveNote(currentNoteId, textboxEdit.Text.ReplaceLineEndings("\n"), textboxTags.Text.Trim(), oldTags);
         if (newId != null)
-            SetReadMode($"{newId}", SearchMode.id);
+            SetReadMode($"{newId}", SearchMode.id, updateTagBtns: true);
     }
 
     protected void SetEditMode(long? noteId = null, string text = "", string tags = "") {
@@ -134,7 +136,7 @@ partial class MainForm : Form {
         UpdateUI();
     }
 
-    protected void SetReadMode(string search, SearchMode by) {
+    protected void SetReadMode(string search, SearchMode by, bool updateTagBtns = false) {
         textboxEdit.Text = "";
         textboxTags.Text = "";
         textboxSearch.Text = textboxSearch.Text;
@@ -147,7 +149,7 @@ partial class MainForm : Form {
         editorMode = EditorMode.read;
         searchMode = by;
 
-        UpdateUI();
+        UpdateUI(updateTagBtns);
     }
 }
 
