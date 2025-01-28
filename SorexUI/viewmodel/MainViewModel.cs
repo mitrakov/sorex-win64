@@ -3,7 +3,7 @@ using SorexUI.model;
 
 namespace SorexUI.viewmodel;
 
-internal class MainViewModel: INotifyPropertyChanged
+internal class MainViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -30,7 +30,7 @@ internal class MainViewModel: INotifyPropertyChanged
     internal void OpenFile()
     {
         var dialog = new OpenFileDialog() { Title = "Select a DB file", Filter = "Sorex DB files (*.db)|*.db|All Files (*.*)|*.*" };
-        if (dialog.ShowDialog() == DialogResult.OK) 
+        if (dialog.ShowDialog() == DialogResult.OK)
             OpenFile(dialog.FileName);
     }
 
@@ -40,7 +40,8 @@ internal class MainViewModel: INotifyPropertyChanged
         if (dialog.ShowDialog() == DialogResult.OK)
         {
             var path = dialog.FileName;
-            if (File.Exists(path)) {
+            if (File.Exists(path))
+            {
                 if (MessageBox.Show($"File already exists:\n{path}\n\nDo you want to erase it?\nIt will remove all data", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     db.CloseDb();
@@ -158,11 +159,9 @@ internal class MainViewModel: INotifyPropertyChanged
 
     private static void AddToRecentFilesList(string item)
     {
-        if (!user.Default.recentFiles.Contains(item))
-        {
-            user.Default.recentFiles.Insert(0, item);
-            user.Default.Save();
-        }
+        user.Default.recentFiles.Remove(item);
+        user.Default.recentFiles.Insert(0, item);
+        user.Default.Save();
     }
 
     private static void RemoveFromRecentFilesList(string item)
@@ -171,8 +170,5 @@ internal class MainViewModel: INotifyPropertyChanged
         user.Default.Save();
     }
 
-    protected void FirePropertyChanged()
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(currentPath));
-    }
+    protected void FirePropertyChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(currentPath));
 }
