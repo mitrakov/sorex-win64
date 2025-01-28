@@ -13,7 +13,7 @@ partial class MainForm : Form {
     private IEnumerable<Note> notes = [];             // in view mode, DB notes array for markdown view
     private string search = "";                       // search by tag name (SearchMode.tag), keyword (.keyword) or ID (.id)
     private EditorMode editorMode = EditorMode.edit;  // edit or view mode
-    private SearchMode searchMode = SearchMode.tag;   // how to search notes (by clicking tag, by full-text, etc)
+    private SearchMode searchMode = SearchMode.tag;   // how to search notes (by clicking tag, by full-text search or by ID)
 
     internal MainForm(MainViewModel vm) {
         InitializeComponent();
