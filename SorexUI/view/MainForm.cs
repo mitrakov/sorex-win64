@@ -16,14 +16,17 @@ partial class MainForm : Form {
     private SearchMode searchMode = SearchMode.tag;   // how to search notes (by clicking tag, by full-text search or by ID)
 
     internal MainForm(MainViewModel vm) {
+        this.vm = vm;
+        vm.PropertyChanged += (s, e) => UpdateUI();
+
         InitializeComponent();
+        // due to a bug in UI Designer, these ElementHosts should be handled manually
         wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
         wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
         editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
-        UpdateMenu();
 
-        this.vm = vm;
-        vm.PropertyChanged += OnCurrentPathChanged;
+        UpdateMenu();
+        UpdateUI();
     }
 
     private void UpdateUI() {
@@ -31,7 +34,7 @@ partial class MainForm : Form {
         tagsPanel.Controls.Clear();
         tagsPanel.Controls.AddRange(vm.GetTags().Select(tag => {
             var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
-            btn.Click += OnTagClick;
+            btn.Click += (s, e) => SetReadMode(tag, SearchMode.tag);
             return btn;
         }).ToArray());
 
@@ -53,6 +56,10 @@ partial class MainForm : Form {
 
         // bottom button
         buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
+
+        // form
+        Text = vm.CurrentPath != null ? $"Sorex ({vm.CurrentPath})" : "Sorex";
+        panelLeft.Enabled = contentPanel.Enabled = vm.CurrentPath != null;
     }
 
     private void UpdateMenu() {
@@ -78,16 +85,6 @@ partial class MainForm : Form {
             buttonSave.PerformClick();
             e.SuppressKeyPress = true; // avoid beep sound
         }
-    }
-
-    private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e) {
-        Text = $"Sorex ({e.PropertyName})";
-        UpdateUI();
-    }
-
-    private void OnTagClick(object? sender, EventArgs e) {
-        if (sender is Button btn)
-            SetReadMode(btn.Text, SearchMode.tag);
     }
 
     private void OnRecentFileClick(object sender, EventArgs e) {

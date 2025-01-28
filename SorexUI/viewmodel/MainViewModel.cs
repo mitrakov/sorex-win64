@@ -7,13 +7,13 @@ internal class MainViewModel : INotifyPropertyChanged {
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private readonly SQLiteDatabase db = new();
-    private string? currentPath;
+    internal string? CurrentPath {  get; set; }
 
     internal void OpenFile(string path) {
         if (File.Exists(path)) {
             Console.WriteLine($"Opening file {path}");
             db.OpenDb(path);
-            currentPath = path;
+            CurrentPath = path;
             AddToRecentFilesList(path);
             FirePropertyChanged();
         } else {
@@ -41,7 +41,7 @@ internal class MainViewModel : INotifyPropertyChanged {
 
             Console.WriteLine($"Creating file {path}");
             db.CreateDb(path);
-            currentPath = path;
+            CurrentPath = path;
             AddToRecentFilesList(path);
             FirePropertyChanged();
         }
@@ -49,7 +49,7 @@ internal class MainViewModel : INotifyPropertyChanged {
 
     internal void CloseFile() {
         db.CloseDb();
-        currentPath = null;
+        CurrentPath = null;
         FirePropertyChanged();
     }
 
@@ -143,5 +143,5 @@ internal class MainViewModel : INotifyPropertyChanged {
         user.Default.Save();
     }
 
-    protected void FirePropertyChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(currentPath));
+    protected void FirePropertyChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(CurrentPath));
 }
