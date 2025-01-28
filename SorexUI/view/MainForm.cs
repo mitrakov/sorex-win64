@@ -19,7 +19,11 @@ partial class MainForm : Form
     internal MainForm(MainViewModel vm)
     {
         InitializeComponent();
-        InitializeComponents();
+        wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
+        wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
+        editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
+        UpdateMenu();
+
         this.vm = vm;
         vm.PropertyChanged += OnCurrentPathChanged;
     }
@@ -53,6 +57,12 @@ partial class MainForm : Form
 
         // bottom button
         buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
+    }
+
+    private void UpdateMenu()
+    {
+        openRecentMenuItem.DropDownItems.Clear();
+        openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
     }
 
     private void OnTextboxEditChange(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textboxEdit.Text;
@@ -94,12 +104,23 @@ partial class MainForm : Form
     private void OnRecentFileClick(object sender, EventArgs e)
     {
         if (sender is ToolStripMenuItem item)
+        {
             vm.OpenFile(item.Text ?? "");
+            UpdateMenu();
+        }
     }
 
-    private void OnNewFileClick(object sender, EventArgs e) => vm.NewFile();
+    private void OnNewFileClick(object sender, EventArgs e)
+    {
+        vm.NewFile();
+        UpdateMenu();
+    }
 
-    private void OnOpenFileClick(object sender, EventArgs e) => vm.OpenFile();
+    private void OnOpenFileClick(object sender, EventArgs e)
+    {
+        vm.OpenFile();
+        UpdateMenu();
+    }
 
     private void OnCloseFileClick(object sender, EventArgs e) => vm.CloseFile();
 
