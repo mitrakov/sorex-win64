@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using SorexMarkdownLibrary;
+﻿using SorexMarkdownLibrary;
 using SorexUI.model;
 using SorexUI.viewmodel;
 
