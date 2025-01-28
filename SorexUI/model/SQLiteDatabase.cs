@@ -2,12 +2,10 @@
 
 namespace SorexUI.model;
 
-internal class SQLiteDatabase
-{
+internal class SQLiteDatabase {
     private SqliteConnection db = new();
 
-    internal void OpenDb(string path)
-    {
+    internal void OpenDb(string path) {
         CloseDb();
         db = new SqliteConnection($"Filename={path}; Foreign Keys=true");
         db.Open();
@@ -17,8 +15,7 @@ internal class SQLiteDatabase
 
     internal bool IsConnected => db.State == System.Data.ConnectionState.Open;
 
-    internal void CreateDb(string path)
-    {
+    internal void CreateDb(string path) {
         OpenDb(path);
         using var tx = db.BeginTransaction();
         var sql = """
@@ -65,8 +62,7 @@ internal class SQLiteDatabase
         tx.Commit(); // TODO check if necessary
     }
 
-    internal long InsertNote(string data)
-    {
+    internal long InsertNote(string data) {
         using var tx = db.BeginTransaction();
         var noteId = SqlCmd("INSERT INTO note DEFAULT VALUES RETURNING note_id;", tx).ExecuteScalar() as long? ?? -1;
         SqlCmd("INSERT INTO notedata (rowid, data) VALUES (@0, @1);", tx, noteId, data).ExecuteScalar();
@@ -75,8 +71,7 @@ internal class SQLiteDatabase
         return noteId;
     }
 
-    internal void UpdateNote(long noteId, string data)
-    {
+    internal void UpdateNote(long noteId, string data) {
         using var tx = db.BeginTransaction();
 
         new List<SqliteCommand>([
@@ -87,13 +82,11 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    internal void SoftDeleteNote(long noteId, bool deleted)
-    {
+    internal void SoftDeleteNote(long noteId, bool deleted) {
         SqlCmd("UPDATE note SET is_deleted = @0, updated_at = CURRENT_TIMESTAMP WHERE note_id = @1;", deleted, noteId).ExecuteNonQuery();
     }
 
-    internal void DeleteNote(long noteId)
-    {
+    internal void DeleteNote(long noteId) {
         using var tx = db.BeginTransaction();
 
         new List<SqliteCommand>([
@@ -106,8 +99,7 @@ internal class SQLiteDatabase
     }
 
 
-    internal IEnumerable<Note> GetNotes(bool fetchDeleted)
-    {
+    internal IEnumerable<Note> GetNotes(bool fetchDeleted) {
         var result = new List<Note>();
 
         var sql = """
@@ -131,8 +123,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal IEnumerable<string> GetTags()
-    {
+    internal IEnumerable<string> GetTags() {
         var result = new List<string>();
 
         using var reader = SqlCmd("SELECT name FROM tag ORDER BY name;").ExecuteReader();
@@ -142,8 +133,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal Note? SearchByID(long id)
-    {
+    internal Note? SearchByID(long id) {
         Note? result = null;
 
         var sql = """
@@ -163,8 +153,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal IEnumerable<Note> SearchByTag(string tag, bool fetchDeleted)
-    {
+    internal IEnumerable<Note> SearchByTag(string tag, bool fetchDeleted) {
         var result = new List<Note>();
 
         var sql = """
@@ -188,8 +177,7 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal IEnumerable<Note> SearchByKeyword(string word, bool fetchDeleted)
-    {
+    internal IEnumerable<Note> SearchByKeyword(string word, bool fetchDeleted) {
         if (word == "") return [];
         var result = new List<Note>();
 
@@ -214,13 +202,11 @@ internal class SQLiteDatabase
         return result;
     }
 
-    internal void LinkTagsToNote(long noteId, IEnumerable<string> tags)
-    {
+    internal void LinkTagsToNote(long noteId, IEnumerable<string> tags) {
         if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
-        foreach (var tag in tags)
-        {
+        foreach (var tag in tags) {
             var tagIdOpt = SqlCmd("SELECT tag_id FROM tag WHERE name = @0;", tx, tag).ExecuteScalar() as long?;
             var tagId = tagIdOpt.IfNull(() => SqlCmd("INSERT INTO tag (name) VALUES (@0) RETURNING tag_id;", tx, tag).ExecuteScalar() as long? ?? -1) ?? -1;
             SqlCmd("INSERT INTO note_to_tag (note_id, tag_id) VALUES (@0, @1);", tx, noteId, tagId).ExecuteNonQuery();
@@ -229,8 +215,7 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    internal void UnlinkTagsFromNote(long noteId, IEnumerable<string> tags)
-    {
+    internal void UnlinkTagsFromNote(long noteId, IEnumerable<string> tags) {
         if (!tags.Any()) return;
 
         using var tx = db.BeginTransaction();
@@ -244,16 +229,14 @@ internal class SQLiteDatabase
         tx.Commit();
     }
 
-    protected SqliteCommand SqlCmd(string query, params object[] args)
-    {
+    protected SqliteCommand SqlCmd(string query, params object[] args) {
         var cmd = new SqliteCommand(query, db);
         for (int i = 0; i < args.Length; i++)
             cmd.Parameters.AddWithValue($"@{i}", args[i]);
         return cmd;
     }
 
-    protected SqliteCommand SqlCmd(string query, SqliteTransaction tx, params object[] args)
-    {
+    protected SqliteCommand SqlCmd(string query, SqliteTransaction tx, params object[] args) {
         var cmd = new SqliteCommand(query, db, tx);
         for (int i = 0; i < args.Length; i++)
             cmd.Parameters.AddWithValue($"@{i}", args[i]);

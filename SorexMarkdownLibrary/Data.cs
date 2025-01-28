@@ -19,7 +19,7 @@ internal class Data : INotifyPropertyChanged
         }
     }
 
-    protected void FirePropertyChanged([CallerMemberName] string propertyName = "") => 
+    protected void FirePropertyChanged([CallerMemberName] string propertyName = "") =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public event PropertyChangedEventHandler? PropertyChanged;

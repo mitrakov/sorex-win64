@@ -5,8 +5,7 @@ using SorexUI.viewmodel;
 
 namespace SorexUI.view;
 
-partial class MainForm : Form
-{
+partial class MainForm : Form {
     private readonly MainViewModel vm;
 
     private long? currentNoteId;                      // if present, it's an ID of the note in edit mode
@@ -16,8 +15,7 @@ partial class MainForm : Form
     private EditorMode editorMode = EditorMode.edit;  // edit or view mode
     private SearchMode searchMode = SearchMode.tag;   // how to search notes (by clicking tag, by full-text, etc)
 
-    internal MainForm(MainViewModel vm)
-    {
+    internal MainForm(MainViewModel vm) {
         InitializeComponent();
         wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
         wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
@@ -28,12 +26,10 @@ partial class MainForm : Form
         vm.PropertyChanged += OnCurrentPathChanged;
     }
 
-    private void UpdateUI()
-    {
+    private void UpdateUI() {
         // tagsPanel
         tagsPanel.Controls.Clear();
-        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag =>
-        {
+        tagsPanel.Controls.AddRange(vm.GetTags().Select(tag => {
             var btn = new Button { Text = tag, Size = new(170, 30), TextAlign = ContentAlignment.MiddleLeft };
             btn.Click += OnTagClick;
             return btn;
@@ -45,13 +41,13 @@ partial class MainForm : Form
 
         // notes markdown
         var ctx = notes.Select(note => new ContextMenu(
-            note.data,
-            note.isDeleted,
-            note.tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-            () => SetEditMode(note.id, note.data, note.tags),
-            () => { vm.ArchiveNoteById(note.id); SetReadMode(search, searchMode); },
-            () => { vm.RestoreNoteById(note.id); SetReadMode(search, searchMode); },
-            () => { vm.DeleteNoteById(note.id); SetReadMode(search, searchMode); }
+            note.Data,
+            note.IsDeleted,
+            note.Tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+            () => SetEditMode(note.Id, note.Data, note.Tags),
+            () => { vm.ArchiveNoteById(note.Id); SetReadMode(search, searchMode); },
+            () => { vm.RestoreNoteById(note.Id); SetReadMode(search, searchMode); },
+            () => { vm.DeleteNoteById(note.Id); SetReadMode(search, searchMode); }
         ));
         sorexMarkdownMulti.SetMarkdown(ctx);
 
@@ -59,8 +55,7 @@ partial class MainForm : Form
         buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
     }
 
-    private void UpdateMenu()
-    {
+    private void UpdateMenu() {
         openRecentMenuItem.DropDownItems.Clear();
         openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
     }
@@ -71,79 +66,65 @@ partial class MainForm : Form
 
     private void OnNewButtonClick(object sender, EventArgs e) => SetEditMode();
 
-    private void OnTextboxSearchKeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.KeyCode == Keys.Enter)
-        {
+    private void OnTextboxSearchKeyDown(object sender, KeyEventArgs e) {
+        if (e.KeyCode == Keys.Enter) {
             SetReadMode(textboxSearch.Text, SearchMode.keyword);
             e.SuppressKeyPress = true; // avoid beep sound
         }
     }
 
-    private void OnTextboxTagsKeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.KeyCode == Keys.Enter)
-        {
+    private void OnTextboxTagsKeyDown(object sender, KeyEventArgs e) {
+        if (e.KeyCode == Keys.Enter) {
             buttonSave.PerformClick();
             e.SuppressKeyPress = true; // avoid beep sound
         }
     }
 
-    private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e)
-    {
+    private void OnCurrentPathChanged(object? sender, PropertyChangedEventArgs e) {
         Text = $"Sorex ({e.PropertyName})";
         UpdateUI();
     }
 
-    private void OnTagClick(object? sender, EventArgs e)
-    {
+    private void OnTagClick(object? sender, EventArgs e) {
         if (sender is Button btn)
             SetReadMode(btn.Text, SearchMode.tag);
     }
 
-    private void OnRecentFileClick(object sender, EventArgs e)
-    {
-        if (sender is ToolStripMenuItem item)
-        {
+    private void OnRecentFileClick(object sender, EventArgs e) {
+        if (sender is ToolStripMenuItem item) {
             vm.OpenFile(item.Text ?? "");
             UpdateMenu();
         }
     }
 
-    private void OnNewFileClick(object sender, EventArgs e)
-    {
+    private void OnNewFileClick(object sender, EventArgs e) {
         vm.NewFile();
         UpdateMenu();
     }
 
-    private void OnOpenFileClick(object sender, EventArgs e)
-    {
+    private void OnOpenFileClick(object sender, EventArgs e) {
         vm.OpenFile();
         UpdateMenu();
     }
 
     private void OnCloseFileClick(object sender, EventArgs e) => vm.CloseFile();
 
-    private void OnQuitSorexClick(object sender, EventArgs e)
-    {
+    private void OnQuitSorexClick(object sender, EventArgs e) {
         vm.CloseFile();
         Application.Exit();
     }
 
-    private void OnAboutSorexClick(object sender, EventArgs e)
-    {
+    private void OnAboutSorexClick(object sender, EventArgs e) {
         MessageBox.Show("Sorex App"); // TODO FIXME message
     }
 
-    private void SaveNote(object sender, EventArgs e)
-    {
+    private void SaveNote(object sender, EventArgs e) {
         var newId = vm.SaveNote(currentNoteId, textboxEdit.Text.ReplaceLineEndings("\n"), textboxTags.Text.Trim(), oldTags);
         if (newId != null)
             SetReadMode($"{newId}", SearchMode.id);
     }
 
-    protected void SetEditMode(long? noteId = null, string text = "", string tags = "")
-    {
+    protected void SetEditMode(long? noteId = null, string text = "", string tags = "") {
         textboxEdit.Text = text;
         textboxTags.Text = tags;
         textboxSearch.Text = "";
@@ -157,8 +138,7 @@ partial class MainForm : Form
         UpdateUI();
     }
 
-    protected void SetReadMode(string search, SearchMode by)
-    {
+    protected void SetReadMode(string search, SearchMode by) {
         textboxEdit.Text = "";
         textboxTags.Text = "";
         textboxSearch.Text = textboxSearch.Text;

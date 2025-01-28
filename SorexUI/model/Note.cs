@@ -1,3 +1,3 @@
 ﻿namespace SorexUI.model;
 
-internal record Note(Int64 id, string data, string tags, bool isDeleted);
+internal record Note(long Id, string Data, string Tags, bool IsDeleted);
