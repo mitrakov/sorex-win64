@@ -39,12 +39,12 @@ public partial class SorexMarkdownMulti : UserControl
             md.Tags.ToList().ForEach(tag => tagsAndButtons.Children.Add(MakeTag(i++, tag, md.IsArchived)));
 
             if (md.IsArchived)
-                tagsAndButtons.Children.Add(MakeButton(i++, "#90ee90", "restore.png", md.OnRestore));
+                tagsAndButtons.Children.Add(MakeButton(i++, "#90ee90", "restore.png", "Restore from archive", md.OnRestore));
             else
             {
-                tagsAndButtons.Children.Add(MakeButton(i++, "#8eb5f7", "edit.png", md.OnEdit));
-                tagsAndButtons.Children.Add(MakeButton(i++, "#fcc18a", "archive.png", md.OnArchive));
-                tagsAndButtons.Children.Add(MakeButton(i++, "#ff655a", "delete.png", md.OnDelete));
+                tagsAndButtons.Children.Add(MakeButton(i++, "#8eb5f7", "edit.png", "Edit note", md.OnEdit));
+                tagsAndButtons.Children.Add(MakeButton(i++, "#fcc18a", "archive.png", "Archive note", md.OnArchive));
+                tagsAndButtons.Children.Add(MakeButton(i++, "#ff655a", "delete.png", "Delete note", md.OnDelete));
             }
 
             // main grid
@@ -83,7 +83,7 @@ public partial class SorexMarkdownMulti : UserControl
         return border;
     }
 
-    private static UIElement MakeButton(int columnIdx, string hexColour, string imageName, Action onClick)
+    private static UIElement MakeButton(int columnIdx, string hexColour, string imageName, string hint, Action onClick)
     {
         var border = new Border
         {
@@ -91,6 +91,7 @@ public partial class SorexMarkdownMulti : UserControl
             Background = new BrushConverter().ConvertFromString(hexColour) as Brush,
             Margin = new(4),
             Padding = new(6),
+            ToolTip = hint,
             Child = new Image
             {
                 Source = new BitmapImage(new Uri($"/SorexMarkdownLibrary;component/images/{imageName}", UriKind.Relative)),
