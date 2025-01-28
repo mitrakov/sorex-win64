@@ -77,7 +77,7 @@ internal class MainViewModel: INotifyPropertyChanged
         return db.GetNotes(showArchive);
     }
 
-    internal Note? SearchByID(Int64 noteId)
+    internal Note? SearchByID(long noteId)
     {
         if (!db.IsConnected) return null;
         return db.SearchByID(noteId);
@@ -97,27 +97,27 @@ internal class MainViewModel: INotifyPropertyChanged
         return db.SearchByKeyword(word, showArchive);
     }
 
-    internal void ArchiveNoteById(Int64 noteId)
+    internal void ArchiveNoteById(long noteId)
     {
         if (!db.IsConnected) return;
         if (MessageBox.Show("Are you sure you want to archive this note?\nIt can be restored later", "Archive note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.SoftDeleteNote(noteId, true);
     }
 
-    internal void RestoreNoteById(Int64 noteId)
+    internal void RestoreNoteById(long noteId)
     {
         if (!db.IsConnected) return;
         db.SoftDeleteNote(noteId, false);
     }
 
-    internal void DeleteNoteById(Int64 noteId)
+    internal void DeleteNoteById(long noteId)
     {
         if (!db.IsConnected) return;
         if (MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.DeleteNote(noteId);
     }
 
-    internal Int64? SaveNote(Int64? noteId, string data, string newTags, string oldTags)
+    internal long? SaveNote(long? noteId, string data, string newTags, string oldTags)
     {
         var tags = newTags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (!db.IsConnected) return null;
@@ -145,7 +145,7 @@ internal class MainViewModel: INotifyPropertyChanged
         }
     }
 
-    private void UpdateTags(Int64 noteId, string newTags, string oldTags)
+    private void UpdateTags(long noteId, string newTags, string oldTags)
     {
         var oldtags = oldTags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToHashSet();
         var newtags = newTags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToHashSet();
@@ -160,7 +160,7 @@ internal class MainViewModel: INotifyPropertyChanged
     {
         if (!user.Default.recentFiles.Contains(item))
         {
-            user.Default.recentFiles.Add(item);
+            user.Default.recentFiles.Insert(0, item);
             user.Default.Save();
         }
     }
