@@ -48,7 +48,8 @@ partial class MainForm : Form {
             note.Data,
             note.IsDeleted,
             note.Tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-            () => SetEditMode(note.Id, note.Data, note.Tags),
+            // if a button gets deleted after click, form will lose focus => need to Activate() it manually
+            () => { SetEditMode(note.Id, note.Data, note.Tags); Task.Delay(0).ContinueWith(t => Invoke(() => Activate())); },
             () => { vm.ArchiveNoteById(note.Id); SetReadMode(search, searchMode); },
             () => { vm.RestoreNoteById(note.Id); SetReadMode(search, searchMode); },
             () => { vm.DeleteNoteById(note.Id); SetReadMode(search, searchMode, updateTagBtns: true); }
@@ -61,6 +62,7 @@ partial class MainForm : Form {
         // form
         Text = vm.CurrentPath != null ? $"Sorex ({vm.CurrentPath})" : "Sorex";
         panelLeft.Enabled = contentPanel.Enabled = vm.CurrentPath != null;
+        if (editorMode == EditorMode.edit) textboxEdit.Focus();
     }
 
     private void UpdateMenu() {
@@ -134,7 +136,6 @@ partial class MainForm : Form {
         searchMode = SearchMode.tag;
 
         UpdateUI();
-        textboxEdit.Focus();
     }
 
     protected void SetReadMode(string search, SearchMode by, bool updateTagBtns = false) {
