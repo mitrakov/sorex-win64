@@ -312,6 +312,7 @@ namespace SorexUI.view
             Controls.Add(contentPanel);
             Controls.Add(panelLeft);
             Controls.Add(mainMenu);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = mainMenu;
             Name = "MainForm";
             Text = "Sorex";
