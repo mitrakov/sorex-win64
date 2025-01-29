@@ -44,7 +44,7 @@ internal partial class MainForm : Form {
         contentPanel.Controls.Add(editorMode == EditorMode.edit ? editModePanel : wpfHostMulti);
 
         // notes markdown
-        var ctx = notes.Select(note => new ContextMenu(
+        var ctx = vm.CurrentPath != null ? notes.Select(note => new ContextMenu(
             note.Data,
             note.IsDeleted,
             note.Tags.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
@@ -53,7 +53,7 @@ internal partial class MainForm : Form {
             () => { vm.ArchiveNoteById(note.Id); SetReadMode(search, searchMode); },
             () => { vm.RestoreNoteById(note.Id); SetReadMode(search, searchMode); },
             () => { vm.DeleteNoteById(note.Id); SetReadMode(search, searchMode, updateTagBtns: true); }
-        ));
+        )) : [];
         sorexMarkdownMulti.SetMarkdown(ctx);
 
         // bottom button
@@ -67,7 +67,7 @@ internal partial class MainForm : Form {
 
     private void UpdateMenu() {
         openRecentMenuItem.DropDownItems.Clear();
-        openRecentMenuItem.DropDownItems.AddRange(user.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
+        openRecentMenuItem.DropDownItems.AddRange(User.Default.recentFiles.Cast<string>().Select(file => new ToolStripMenuItem(file, null, OnRecentFileClick)).ToArray());
     }
 
     private void OnTextboxEditChange(object sender, EventArgs e) => sorexMarkdownSingle.Markdown = textboxEdit.Text;
@@ -90,7 +90,7 @@ internal partial class MainForm : Form {
         }
     }
 
-    private void OnRecentFileClick(object sender, EventArgs e) {
+    private void OnRecentFileClick(object? sender, EventArgs e) {
         if (sender is ToolStripMenuItem item) {
             vm.OpenFile(item.Text ?? "");
             UpdateMenu();
@@ -122,6 +122,7 @@ internal partial class MainForm : Form {
         var newId = vm.SaveNote(currentNoteId, textboxEdit.Text.ReplaceLineEndings("\n"), textboxTags.Text.Trim(), oldTags);
         if (newId != null)
             SetReadMode($"{newId}", SearchMode.id, updateTagBtns: true);
+        else textboxTags.Focus();
     }
 
     protected void SetEditMode(long? noteId = null, string text = "", string tags = "") {

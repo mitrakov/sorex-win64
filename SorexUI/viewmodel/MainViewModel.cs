@@ -36,7 +36,7 @@ internal class MainViewModel : INotifyPropertyChanged {
                 if (MessageBox.Show($"File already exists:\n{path}\n\nDo you want to erase it?\nIt will remove all data", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes) {
                     db.CloseDb();
                     File.Delete(path);
-                }
+                } else return;
             }
 
             Console.WriteLine($"Creating file {path}");
@@ -53,7 +53,7 @@ internal class MainViewModel : INotifyPropertyChanged {
         FirePropertyChanged();
     }
 
-    internal static IEnumerable<string> RecentFiles => user.Default.recentFiles.Cast<string>();
+    internal static IEnumerable<string> RecentFiles => User.Default.recentFiles.Cast<string>();
 
     internal IEnumerable<string> GetTags() {
         if (!db.IsConnected) return [];
@@ -107,7 +107,7 @@ internal class MainViewModel : INotifyPropertyChanged {
             MessageBox.Show("Please add at least 1 tag\ne.g. \"Work\" or \"TODO\"", "Tag required", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return null;
         }
-        if (noteId is Int64 id) {
+        if (noteId is long id) {
             // UPDATE
             db.UpdateNote(id, data);
             UpdateTags(id, newTags, oldTags);
@@ -133,14 +133,14 @@ internal class MainViewModel : INotifyPropertyChanged {
     }
 
     private static void AddToRecentFilesList(string item) {
-        user.Default.recentFiles.Remove(item);
-        user.Default.recentFiles.Insert(0, item);
-        user.Default.Save();
+        User.Default.recentFiles.Remove(item);
+        User.Default.recentFiles.Insert(0, item);
+        User.Default.Save();
     }
 
     private static void RemoveFromRecentFilesList(string item) {
-        user.Default.recentFiles.Remove(item);
-        user.Default.Save();
+        User.Default.recentFiles.Remove(item);
+        User.Default.Save();
     }
 
     protected void FirePropertyChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(CurrentPath));

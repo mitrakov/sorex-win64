@@ -21,12 +21,12 @@
     <Compile Update="user.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
-      <DependentUpon>user.settings</DependentUpon>
+      <DependentUpon>User.settings</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="user.settings">
+    <None Update="User.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>user.Designer.cs</LastGenOutput>
     </None>
