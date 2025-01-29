@@ -1,0 +1,8 @@
+Note that Sorex is not a usual note-taking app!
+It's an indefinite "feed" of small notes.
+
+Don't:
+- add note -> search note -> edit note -> save note
+
+Recommended usage:
+- add note1 -> add note2 -> add note3 -> search note
