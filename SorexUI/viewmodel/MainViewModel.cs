@@ -7,7 +7,7 @@ internal class MainViewModel : INotifyPropertyChanged {
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private readonly SQLiteDatabase db = new();
-    internal string? CurrentPath {  get; set; }
+    internal string? CurrentPath { get; set; }
 
     internal void OpenFile(string path) {
         if (File.Exists(path)) {

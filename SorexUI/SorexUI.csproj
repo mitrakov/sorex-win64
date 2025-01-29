@@ -33,11 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\Tommy\workspace\sorex-win64\SorexUI\.editorconfig" />
+    <EditorConfigFiles Remove=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\Tommy\workspace\sorex-win64\SorexUI\.editorconfig" />
+    <None Include=".editorconfig" />
   </ItemGroup>
 
 </Project>
