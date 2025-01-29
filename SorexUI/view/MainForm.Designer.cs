@@ -218,9 +218,9 @@ namespace SorexUI.view {
             buttonSave.Size = new Size(140, 29);
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Add Note";
-            buttonSave.TextAlign = ContentAlignment.MiddleRight;
-            buttonSave.ImageAlign = ContentAlignment.MiddleLeft;
             buttonSave.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonSave.TextAlign = ContentAlignment.MiddleRight;
+            buttonSave.ImageAlign = ContentAlignment.MiddleCenter;
             buttonSave.UseVisualStyleBackColor = true;
             buttonSave.Click += SaveNote;
             // 
