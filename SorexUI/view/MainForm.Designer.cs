@@ -121,7 +121,6 @@ namespace SorexUI.view {
             // buttonNew
             // 
             buttonNew.ImageList = imagesNew;
-            buttonNew.ImageIndex = 0;
             buttonNew.Location = new Point(3, 3);
             buttonNew.Name = "buttonNew";
             buttonNew.Size = new Size(57, 59);
@@ -214,7 +213,6 @@ namespace SorexUI.view {
             // 
             buttonSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
             buttonSave.ImageList = imagesSave;
-            buttonSave.ImageIndex = 0;
             buttonSave.Location = new Point(325, 5);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(140, 29);

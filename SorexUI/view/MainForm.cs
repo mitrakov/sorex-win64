@@ -28,6 +28,7 @@ internal partial class MainForm : Form {
         imagesNew.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus") as byte[] ?? []));
         imagesSave.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus-circle") as byte[] ?? []));
         imagesSave.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("mark-circle") as byte[] ?? []));
+        buttonSave.ImageIndex = buttonNew.ImageIndex = 0;
 
         UpdateMenu();
         UpdateUI();
@@ -62,7 +63,7 @@ internal partial class MainForm : Form {
         sorexMarkdownMulti.SetMarkdown(ctx);
 
         // bottom button
-        buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
+        buttonSave.Text = currentNoteId == null ? " Add Note" : "Update Note";
         buttonSave.ImageIndex = currentNoteId == null ? 0 : 1;
 
         // form
