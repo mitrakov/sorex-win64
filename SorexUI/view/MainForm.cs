@@ -1,4 +1,5 @@
-﻿using SorexMarkdownLibrary;
+﻿using System.Resources;
+using SorexMarkdownLibrary;
 using SorexUI.model;
 using SorexUI.viewmodel;
 
@@ -23,6 +24,8 @@ internal partial class MainForm : Form {
         wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
         wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
         editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
+        // manually add image to avoid warning: "Resource "images.ImageStream" of type "System.String" may be deserialized via BinaryFormatter at runtime. BinaryFormatter is deprecated..."
+        images.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus") as byte[] ?? []));
 
         UpdateMenu();
         UpdateUI();

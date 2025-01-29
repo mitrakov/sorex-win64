@@ -119,8 +119,8 @@ namespace SorexUI.view {
             // 
             // buttonNew
             // 
-            buttonNew.ImageIndex = 0;
             buttonNew.ImageList = images;
+            buttonNew.ImageIndex = 0;
             buttonNew.Location = new Point(3, 3);
             buttonNew.Name = "buttonNew";
             buttonNew.Size = new Size(57, 59);
@@ -133,9 +133,8 @@ namespace SorexUI.view {
             // images
             // 
             images.ColorDepth = ColorDepth.Depth32Bit;
-            images.ImageStream = (ImageListStreamer)resources.GetObject("images.ImageStream");
+            images.ImageSize = new Size(28, 32);
             images.TransparentColor = Color.Transparent;
-            images.Images.SetKeyName(0, "square-plus.png");
             // 
             // contentPanel
             // 
