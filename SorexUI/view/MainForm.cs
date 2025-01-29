@@ -4,7 +4,7 @@ using SorexUI.viewmodel;
 
 namespace SorexUI.view;
 
-partial class MainForm : Form {
+internal partial class MainForm : Form {
     private readonly MainViewModel vm;
 
     private long? currentNoteId;                      // if present, it's an ID of the note in edit mode

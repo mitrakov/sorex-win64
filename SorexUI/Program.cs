@@ -2,7 +2,7 @@ namespace SorexUI;
 
 internal static class Program {
     [STAThread]
-    static void Main() {
+    internal static void Main() {
         ApplicationConfiguration.Initialize();
         Application.Run(new view.MainForm(new()));
     }

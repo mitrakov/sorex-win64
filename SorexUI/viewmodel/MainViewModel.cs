@@ -33,7 +33,7 @@ internal class MainViewModel : INotifyPropertyChanged {
         if (dialog.ShowDialog() == DialogResult.OK) {
             var path = dialog.FileName;
             if (File.Exists(path)) {
-                if (MessageBox.Show($"File already exists:\n{path}\n\nDo you want to erase it?\nIt will remove all data", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation) == DialogResult.Yes) {
+                if (MessageBox.Show($"File already exists:\n{path}\n\nDo you want to erase it?\nIt will remove all data", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes) {
                     db.CloseDb();
                     File.Delete(path);
                 }
@@ -84,7 +84,7 @@ internal class MainViewModel : INotifyPropertyChanged {
 
     internal void ArchiveNoteById(long noteId) {
         if (!db.IsConnected) return;
-        if (MessageBox.Show("Are you sure you want to archive this note?\nIt can be restored later", "Archive note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+        if (MessageBox.Show("Are you sure you want to archive this note?\nIt can be restored later", "Archive note", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.SoftDeleteNote(noteId, true);
     }
 
@@ -95,7 +95,7 @@ internal class MainViewModel : INotifyPropertyChanged {
 
     internal void DeleteNoteById(long noteId) {
         if (!db.IsConnected) return;
-        if (MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+        if (MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             db.DeleteNote(noteId);
     }
 
