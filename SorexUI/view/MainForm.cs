@@ -24,8 +24,10 @@ internal partial class MainForm : Form {
         wpfHostSingle = new() { Child = sorexMarkdownSingle = new(), Dock = DockStyle.Fill };
         wpfHostMulti = new() { Child = sorexMarkdownMulti = new(), Dock = DockStyle.Fill };
         editSplitPanel.Panel2.Controls.Add(wpfHostSingle);
-        // manually add image to avoid warning: "Resource "images.ImageStream" of type "System.String" may be deserialized via BinaryFormatter at runtime. BinaryFormatter is deprecated..."
-        images.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus") as byte[] ?? []));
+        // manually add images to avoid warning: "Resource "imagesNew.ImageStream" of type "System.String" may be deserialized via BinaryFormatter at runtime. BinaryFormatter is deprecated..."
+        imagesNew.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus") as byte[] ?? []));
+        imagesSave.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("plus-circle") as byte[] ?? []));
+        imagesSave.Images.Add(Extensions.BytesToImage(new ResourceManager(GetType()).GetObject("mark-circle") as byte[] ?? []));
 
         UpdateMenu();
         UpdateUI();
@@ -61,6 +63,7 @@ internal partial class MainForm : Form {
 
         // bottom button
         buttonSave.Text = currentNoteId == null ? "Add Note" : "Update Note";
+        buttonSave.ImageIndex = currentNoteId == null ? 0 : 1;
 
         // form
         Text = vm.CurrentPath != null ? $"Sorex ({vm.CurrentPath})" : "Sorex";

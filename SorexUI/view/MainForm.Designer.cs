@@ -34,7 +34,7 @@ namespace SorexUI.view {
             checkShowArchive = new CheckBox();
             textboxSearch = new TextBox();
             buttonNew = new Button();
-            images = new ImageList(components);
+            imagesNew = new ImageList(components);
             contentPanel = new Panel();
             editModePanel = new Panel();
             editSplitPanel = new SplitContainer();
@@ -43,6 +43,7 @@ namespace SorexUI.view {
             labelTags = new Label();
             textboxTags = new TextBox();
             buttonSave = new Button();
+            imagesSave = new ImageList(components);
             mainMenu = new MenuStrip();
             fileMenuItem = new ToolStripMenuItem();
             openRecentMenuItem = new ToolStripMenuItem();
@@ -119,7 +120,7 @@ namespace SorexUI.view {
             // 
             // buttonNew
             // 
-            buttonNew.ImageList = images;
+            buttonNew.ImageList = imagesNew;
             buttonNew.ImageIndex = 0;
             buttonNew.Location = new Point(3, 3);
             buttonNew.Name = "buttonNew";
@@ -130,11 +131,11 @@ namespace SorexUI.view {
             buttonNew.UseVisualStyleBackColor = true;
             buttonNew.Click += OnNewButtonClick;
             // 
-            // images
+            // imagesNew
             // 
-            images.ColorDepth = ColorDepth.Depth32Bit;
-            images.ImageSize = new Size(28, 32);
-            images.TransparentColor = Color.Transparent;
+            imagesNew.ColorDepth = ColorDepth.Depth32Bit;
+            imagesNew.ImageSize = new Size(28, 32);
+            imagesNew.TransparentColor = Color.Transparent;
             // 
             // contentPanel
             // 
@@ -212,13 +213,24 @@ namespace SorexUI.view {
             // buttonSave
             // 
             buttonSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            buttonSave.ImageList = imagesSave;
+            buttonSave.ImageIndex = 0;
             buttonSave.Location = new Point(325, 5);
             buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(120, 29);
+            buttonSave.Size = new Size(140, 29);
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Add Note";
+            buttonSave.TextAlign = ContentAlignment.MiddleRight;
+            buttonSave.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonSave.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonSave.UseVisualStyleBackColor = true;
             buttonSave.Click += SaveNote;
+            // 
+            // imagesSave
+            // 
+            imagesSave.ColorDepth = ColorDepth.Depth32Bit;
+            imagesSave.ImageSize = new Size(18, 18);
+            imagesSave.TransparentColor = Color.Transparent;
             // 
             // mainMenu
             // 
@@ -352,7 +364,8 @@ namespace SorexUI.view {
         private Button buttonNew;
         private CheckBox checkShowArchive;
         private TextBox textboxSearch;
-        private ImageList images;
+        private ImageList imagesNew;
+        private ImageList imagesSave;
         private SplitContainer editSplitPanel;
         private Panel panelBottom;
         private TextBox textboxTags;
