@@ -5,7 +5,7 @@ namespace SorexMarkdownLibrary;
 
 internal class Data : INotifyPropertyChanged {
     private string _markdown = "";
-    internal string Markdown {
+    public string Markdown { // must be public to be visible in Xaml ("{Binding Markdown}")
         get { return _markdown; }
         set {
             if (_markdown != value) {
