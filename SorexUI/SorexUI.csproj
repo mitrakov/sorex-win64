@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="user.Designer.cs">
+    <Compile Update="User.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>User.settings</DependentUpon>
@@ -43,7 +43,7 @@
   <ItemGroup>
     <None Update="User.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>user.Designer.cs</LastGenOutput>
+      <LastGenOutput>User.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
