@@ -8,7 +8,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <NuGetAudit>False</NuGetAudit>
     <AssemblyName>Sorex</AssemblyName>
-    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <ApplicationIcon>resources\app.ico</ApplicationIcon>
+	<Version>1.0.5</Version>
+	<AssemblyVersion>1.0.7</AssemblyVersion>
+	<Authors>Artem Mitrakov</Authors>
+	<ProjectGuid>d4df8001-9f58-4e84-b9f8-f2e86bb34ee9</ProjectGuid>
+
+	<!-- attributes visible in exe properties -->
+	<AssemblyTitle>Sorex. Open-source cross-platform note taking app</AssemblyTitle>
+	<FileVersion>1.0.0.0</FileVersion>
+	<Company>Artem Mitrakov</Company>
+	<ProductName>Sorex application</ProductName>
+	<InformationalVersion>1.0.6</InformationalVersion>
+	<Copyright>Licensed under MIT. mitrakov-artem@yandex.ru</Copyright>
+	<!-- ## -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\app.ico" />
+    <Content Include="resources\app.ico" />
   </ItemGroup>
 
   <ItemGroup>
