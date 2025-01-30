@@ -1,10 +1,9 @@
 namespace SorexUI;
 
 // build:
-// 1) raise version in SorexUI.csproj
-// 2) clean the "bin" folder manually
-// 3) run: dotnet publish --self-contained
-// 4) compile installer.iss with InnoSetup
+// 1) raise Version, AssemblyVersion and FileVersion in SorexUI.csproj
+// 2) run: dotnet publish --self-contained --output temp
+// 3) compile installer.iss with InnoSetup (=> check Output folder)
 internal static class Program {
     [STAThread]
     internal static void Main() {
