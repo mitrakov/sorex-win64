@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System.Reflection;
+using System.Resources;
 using SorexMarkdownLibrary;
 using SorexUI.model;
 using SorexUI.viewmodel;
@@ -122,7 +123,9 @@ internal partial class MainForm : Form {
     }
 
     private void OnAboutSorexClick(object sender, EventArgs e) {
-        MessageBox.Show("Sorex App"); // TODO FIXME message
+        var info = Assembly.GetExecutingAssembly().GetName();
+        var msg = $"{info.Name} v{info.Version}\nAuthor: Artem Mitrakov (mitrakov-artem@yandex.ru)\nLicensed under MIT © All rights reserved";
+        MessageBox.Show(msg, "Sorex", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void SaveNote(object sender, EventArgs e) {
