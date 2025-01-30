@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sorex"
-#define MyAppVersion "25.1.28"
+#define MyAppVersion "1.0.0"
 #define MyAppPublisher "Artem Mitrakov"
 #define MyAppURL "https://mitrakoff.com"
 #define MyAppExeName "Sorex.exe"
@@ -79,8 +79,8 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Sorex\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Sorex\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "SorexUI\bin\Release\net9.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "SorexUI\bin\Release\net9.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
